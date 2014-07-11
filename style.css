@@ -1,0 +1,25 @@
+/*
+ Theme Name:   Hueman Child
+ Theme URI: http://alxmedia.se/themes/hueman/
+ Description:  Hueman Child Theme
+ Author:       John Doe
+ Author URI:   http://example.com
+ Template:     hueman
+ Version:      1.0.0
+ Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+ Text Domain:  hueman-child
+*/
+
+@import url("../hueman/style.css");
+
+/* =Theme customization starts here
+-------------------------------------------------------------- */
+
+.sidebar .widget {
+margin-top:-10px;
+margin-bottom: -40px;
+}
+
+.header {
+display:none;
+}
