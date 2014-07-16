@@ -23,9 +23,9 @@ jQuery(document).ready( function() {
     	
     	jQuery.post(MyAjax.ajaxurl, data, function(response) {
     		alert('Thanks for your input!');
-    		//window.location = 'http://10.1.43.254';
+    		window.location = 'http://10.1.43.254';
     		//For Testing
-    		window.location = 'http://localhost:4567';
+    		//window.location = 'http://localhost:4567';
     	});
     });
 });
