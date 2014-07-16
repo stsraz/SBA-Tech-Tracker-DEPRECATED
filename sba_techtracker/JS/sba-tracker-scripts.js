@@ -151,6 +151,7 @@ function finish() {
 
     jQuery.post(MyAjax.ajaxurl, data, function(response){
         //location.reload(true);
+        window.location = 'http://127.0.0.1:4567/?page_id=14';
     });
 }
 

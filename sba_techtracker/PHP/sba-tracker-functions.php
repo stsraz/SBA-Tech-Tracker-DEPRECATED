@@ -256,7 +256,8 @@ function preview_store($selected_store) {
                     <td>Activation Type</td>
                     <td>Store Number</td>
                     <td>Eon Number</td>
-                    <td>Location</td></tr>
+                    <td>Location</td>
+                    <td>Field Tech</td></tr>
                 <tr>
 StringOne;
         try {
@@ -269,7 +270,8 @@ StringOne;
                         activation_type,
                         eon_number,
                         store_city,
-                        store_state
+                        store_state,
+                        field_tech_name
                     FROM
                         activation,store
 					WHERE
@@ -287,6 +289,8 @@ StringOne;
                     echo '<td>' . $preview[ 'activation_type' ] . '</td>';
                     echo '<td>' . $preview[ 'eon_number' ] . '</td>';
                     echo '<td>' . $preview[ 'store_city' ] . ', ' . $preview[ 'store_state' ] . '</td>';
+					echo '<td>' . $preview[ 'field_tech_name' ] . '</td>';
+					$_SESSION['field_tech'] = $preview['field_tech_name'];
                 }
 
                 //Close the database connection.
