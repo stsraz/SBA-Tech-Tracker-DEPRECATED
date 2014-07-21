@@ -320,13 +320,14 @@ function start_activation($store, $time) {
                     activation_waiting = 0,
                     activation_in_progress = 1,
                     sa_tech = :tech,
-                    start_time = :start
+                    start_time = :start,
+                    time_step_changed = :changed
                 WHERE
 					activation.store_number = store_annals.store_number_records
 				AND
                     activation.store_number = :storenumber';
         $result = $dbconn->prepare( $sql );
-        $result->execute( array( ':tech'=>$tech, ':start'=>$time, ':storenumber'=>$store ));
+        $result->execute( array( ':changed'=>$time, ':tech'=>$tech, ':start'=>$time, ':storenumber'=>$store ));
     }
     catch(PDOException $e) {
             print 'Error!: ' . $e->getMessage() . '<br>';

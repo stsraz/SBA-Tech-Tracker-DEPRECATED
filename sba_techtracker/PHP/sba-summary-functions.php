@@ -163,14 +163,15 @@ SQL;
 
     foreach($result as $activation) {
         $controller++;
+		$current_time = time();
         
         $sa_tech = $activation['sa_tech'];
         $store_number = $activation['store_number'];
         $activation_type = $activation['activation_type'];
         $current_step = $activation['current_step'];
         $step_data = get_current_step($activation_type, $current_step);
-        $step_time = time() - $activation['time_step_changed'];
-        $start_time = time() - $activation['start_time'];
+        $step_time = $current_time - $activation['time_step_changed'];
+        $start_time = $current_time - $activation['start_time'];
         
         $td_total_id = '</td><td><div id = "total_div_' . $controller . '" data-total = "' . $start_time . '"></div>';
         $td_step_id = '</td><td><div id = "step_div_' . $controller . '" data-step = "' . $step_time . '"></div>';
@@ -185,7 +186,7 @@ function get_on_deck() {
     $dbconn = connect_db();
     $sql = <<<SQL
             SELECT
-                store_number, assigned_sa_tech, activation_type, activation_time_scheduled
+                store_number, assigned_sa_tech, activation_type, start_timestamp_gmt
             FROM
                 activation, store_annals, precheck
             WHERE
@@ -200,7 +201,7 @@ function get_on_deck() {
 				activation_completed = 0
             AND
                 assigned_sa_tech != 'Unassigned'
-            ORDER BY activation_time_scheduled
+            ORDER BY start_timestamp_gmt
 SQL;
     $result = $dbconn->query($sql);
     $trtd = '<tr><td>';
@@ -213,7 +214,7 @@ SQL;
         $sa_tech = $activation['assigned_sa_tech'];
         $store_number = $activation['store_number'];
         $activation_type = $activation['activation_type'];
-        $until_start_time = $activation['activation_time_scheduled'];
+        $until_start_time = $activation['start_timestamp_gmt'];
         
         $td_until_id = '</td><td><div id = "until_start_div_' . $controller . '" data-until = "' . $until_start_time . '"></div>';
         
@@ -226,7 +227,7 @@ function get_unassigned() {
     $dbconn = connect_db();
     $sql = <<<SQL
             SELECT
-                store_number, activation_type, activation_time_scheduled
+                store_number, activation_type, start_timestamp_gmt
             FROM
                 activation, store_annals, precheck
             WHERE
@@ -250,7 +251,7 @@ SQL;
         
         $store_number = $activation['store_number'];
         $activation_type = $activation['activation_type'];
-        $until_start_time = $activation['activation_time_scheduled'];
+        $until_start_time = $activation['start_timestamp_gmt'];
         
         $td_until_id = '</td><td><div id = "until_unassigned_div_' . $controller . '" data-until = "' . $until_start_time . '"></div>';
         

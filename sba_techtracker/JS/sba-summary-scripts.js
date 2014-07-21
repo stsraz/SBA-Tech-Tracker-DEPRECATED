@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
 });
 
 function start_timer() {
-	var get_act = setInterval(function(){get_activations()}, 60000);
+	var get_act = setInterval(function(){get_activations();}, 60000);
 }
 
 function get_activations() {
