@@ -1,4 +1,4 @@
-#preview_table, #header_info, #buttons_one, #buttons_two, #timers, #step_div
+#preview_table, #header_info, #buttons_one, #buttons_two, #timers, #step_div, #single_edit_table
 {
     width: 100%;
     text-align: center;
@@ -20,27 +20,6 @@
     text_align: center;
 }
 
-.scroll-text {
-  padding-top: 25px;
-  border: none;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  height: 2em;
-  overflow: hidden;
-}
-.scroll-text ul {
-  width: 800px;
-  height: 100px;
-  overflow: hidden;
-  margin: 0;
-}
-.scroll-text ul li {
-  text-align: center;
-  height: 1.5em;
-  font-size: x-large;
-  font-weight: bold;
-}
 .status_table {
     width: 100%
 }
