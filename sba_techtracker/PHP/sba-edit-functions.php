@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-check_logged_in();
+//check_logged_in();
 
 function sba_edit_callback() {
     check_ajax_referer( 'sba-security-string', 'security');
