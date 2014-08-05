@@ -44,8 +44,14 @@ get_header();
 if(session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
-(new Presenter())->add_tabs();
-(new Router())->do_action();
+if (!is_user_logged_in()) {
+	auth_redirect();
+}
+$username=wp_get_current_user()->user_login;
+
+$logic=new Logic($username);
+$presenter=new Start($logic);
+(new Router($presenter))->do_action();
 
 ?>
 

@@ -4,36 +4,51 @@ function sba_precheck_callback() {
     //Checks the source of the ajax call.
     check_ajax_referer( 'sba-security-string', 'security');
 
-	$response = (new Router())->do_action();
+	$response = (new Router($presenter))->do_action();
 	return $response;
 }
 add_action( 'wp_ajax_precheck_callback', 'sba_precheck_callback');
 
 class Router {
-	function do_action() {
+	private $presenter;
+	
+	private function __construct(Presenter $presenter) {
+		$this->presenter=$presenter;
+		
+	}
+	public function do_action() {
 	    if (!isset($_POST['type'])) {
 	    	return;
 		}
-        $response = (new Presenter())->$_POST['type']();
+        $response = $this->$presenter->$_POST['type']();
 		return $response;
 		die();
 	}
 }
 
 class Logic {
-	private $presenter;
- 
-    function __construct(Presenter $presenter) {
-        $this->presenter = $presenter;
-    }
- 
-    function add_tabs() {
-        $this->presenter->add_tabs();
-    }
+	private $username;
+	
+	private function __construct($username) {
+		$this->username=$username;
+	}
+
+	public function get_store_list() {
+		$result = Database::select("store_number,assigned_sa_tech", "activation,precheck", "activation_completed='0' AND activation.store_number=precheck.store_number_precheck", "assigned_sa_tech");
+		foreach($result as $store) {
+			echo "<option>" . $store['store_number'] . " - " . $store['assigned_sa_tech'] . "</option>";
+		}
+		die();
+	}
+	
 }
 
 class Presenter {
+	private $sba_logic;
 	
+	private function __construct(Logic $logic) {
+		$this->sba_logic=$logic;
+	}
 	
 	public function add_tabs() {
 		echo <<<TABS
@@ -46,7 +61,7 @@ class Presenter {
 				<li><a href="#summary"><span>Activation Summary</span></a></li>
 			</ul>
 			<div id="start">
-				<p>Welcome to SBA Tech Tracker 3.0!</p>
+				
 			</div>
 			<div id="tracker">
 			
@@ -63,20 +78,24 @@ class Presenter {
 		</div>
 TABS;
 	}
-	
+
 	public function add_store_list() {
-		echo <<<PRECHECK
+		echo <<<STORELIST
 		<form>
 			<label for="store">Store Number: </label>
 			<select name="store" id="store">
 				<option></option>
-PRECHECK;
-		$result = Database::select("store_number,assigned_sa_tech", "activation,precheck", "activation_is_tonight='1' AND activation.store_number=precheck.store_number_precheck", "assigned_sa_tech");
-		foreach($result as $store) {
-			echo "<option>" . $store['store_number'] . " - " . $store['assigned_sa_tech'] . "</option>";
-		}
+STORELIST;
+		$this->sba_logic->get_store_list();
 		echo "</select></form>";
-		die();
+	}
+}
+
+class Start extends Presenter {
+	private function __construct(Logic $logic) {
+		parent::construct($logic);
+		parent::add_tabs();
+		parent::add_store_list();
 	}
 }
 
