@@ -1,37 +1,3 @@
-#preview_table, #header_info, #buttons_one, #buttons_two, #timers, #step_div, #single_edit_table
-{
-    width: 100%;
-    text-align: center;
-}
-
-.status_table
-{
-    text-align: center;
-    border: 1px solid black;
-}
-
-.status_table_head
-{
-    font-weight: bold;
-}
-
-.preview_table
-{
-    text_align: center;
-}
-
-.status_table {
-    width: 100%
-}
-
-.status_table td {
-    border: 1px solid black;
-}
-
-#in_progress_div, #on_deck_div, #unassigned_div {
-    text-align: center;
-    font-weight: bold;
-    font-size: xx-large;
-    padding-top: 25px;
-    padding-bottom: 25px;
+li {
+	font-size:small;
 }

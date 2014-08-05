@@ -14,6 +14,7 @@ function sba_precheck_scripts() {
 	wp_enqueue_script("jquery-form");
 	wp_enqueue_script("jquery-ui-core");
 	wp_enqueue_script("jquery-ui-widget");
+	wp_enqueue_script("jquery-ui-tabs");
 	wp_enqueue_script("jquery-ui-button");
 	wp_enqueue_script("jquery-ui-progressbar");
 	wp_enqueue_script("jquery-ui-datepicker");
@@ -25,6 +26,10 @@ function sba_precheck_scripts() {
 	wp_register_script('store-js', get_bloginfo('stylesheet_directory') . '/sba_techtracker/JS/store.min.js', true);
 	
 	
+	//My styles
+	wp_register_style( 'sba-style', get_bloginfo('stylesheet_directory') . '/sba_techtracker/CSS/sba-style.css' );
+	wp_enqueue_style( 'sba-style' );
+	
 	//My scripts
 	wp_enqueue_script( 'sba-precheck-scripts.js', get_bloginfo('stylesheet_directory') . '/sba_techtracker/JS/sba-precheck-scripts.js', array( 'jquery' ), true);
 	wp_localize_script( 'sba-precheck-scripts.js', 'MyAjax', array( 
@@ -34,34 +39,19 @@ function sba_precheck_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'sba_precheck_scripts' );
 
-//if(!$_SESSION['time_zone'] {
-	//set_time_zone()
-//});
-
 get_header();
 
-$result = Database::select('*','activation','store_number="10000"','store_number');
-foreach($result as $test){
-	echo $test['store_number'];
-	echo $test['activation_type'];
+if(session_status() == PHP_SESSION_NONE) {
+	session_start();
 }
-
+(new Presenter())->add_tabs();
+(new Router())->do_action();
 
 ?>
 
-<section class = 'content'>
-	
-	<!-- FOR DEVELOPMENT -->
-	<div id = 'test_div'></div>
-	
-	<div id = 'tracker_content'></div>
-	
-<!-- /.content -->
-</section>
+<section class = 'content'></section>
 
 <?php 
-
 get_sidebar();
 get_footer();
-
 ?>
