@@ -32,8 +32,8 @@ function sba_precheck_scripts() {
 	wp_enqueue_style( 'sba-style' );
 	
 	//My scripts
-	wp_enqueue_script( 'sba-precheck-scripts.js', get_bloginfo('stylesheet_directory') . '/sba_techtracker/JS/sba-precheck-scripts.js', array( 'jquery' ), true);
-	wp_localize_script( 'sba-precheck-scripts.js', 'MyAjax', array( 
+	wp_enqueue_script( 'sba-scripts.js', get_bloginfo('stylesheet_directory') . '/sba_techtracker/JS/sba-scripts.js', array( 'jquery' ), true);
+	wp_localize_script( 'sba-scripts.js', 'MyAjax', array( 
 	'ajaxurl' => admin_url( 'admin-ajax.php' ),
 	'security' => wp_create_nonce( 'sba-security-string' )
 	));

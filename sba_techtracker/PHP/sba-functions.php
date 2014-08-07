@@ -1,6 +1,6 @@
 <?php
 
-function sba_precheck_callback() {
+function sba_callback() {
     //Checks the source of the ajax call.
     check_ajax_referer( 'sba-security-string', 'security');
 	
@@ -10,10 +10,10 @@ function sba_precheck_callback() {
 	$logic=new Logic($username);
 	$presenter=new Presenter($logic);
 	$router=new Router($presenter);
-	$response=$router->do_action($action,$tab);
+	$response=$router->do_action($action);
 	echo $response;
 }
-add_action( 'wp_ajax_precheck_callback', 'sba_precheck_callback');
+add_action( 'wp_ajax_sba_callback', 'sba_callback');
 
 class Router {
 	private $presenter;
@@ -22,8 +22,8 @@ class Router {
 		$this->presenter=$presenter;
 		
 	}
-	public function do_action($action,$tab) {
-        $response = $this->presenter->$action($tab);
+	public function do_action($action) {
+        $response = $this->presenter->$action();
 		return $response;
 	}
 }
@@ -46,29 +46,51 @@ class Logic {
 
 class Presenter {
 	private $my_logic;
-	public $my_ui;
-	public $start_div;
+	public $my_interface;
 	
 	public function __construct(Logic $logic) {
 		$this->my_logic=$logic;
 		$this->set_ui();
 	}
 	
-	public function populate($tab) {
-		$table=new Table(4,4,16,$tab);
-		$table_obj=$table->build_table();
-		$table_pos='<div id="'.$tab.'"></div>';
-		$placeholder = $this->into_div($this->my_ui, $table_obj, $table_pos);
-		$this->my_ui=$placeholder;
-		return $this->my_ui;
+	public function populate() {
+		$table0=new Table(4,4,16,'start');
+		$table_obj[0]=$table0->build_table();
+		$table_pos[0]='<div id="start"></div>';
+		
+		$table1=new Table(4,4,16,'tracker');
+		$table_obj[1]=$table1->build_table();
+		$table_pos[1]='<div id="tracker"></div>';
+		
+		$table2=new Table(4,4,16,'precheck');
+		$table_obj[2]=$table2->build_table();
+		$table_pos[2]='<div id="precheck"></div>';
+		
+		$table3=new Table(4,4,16,'view');
+		$table_obj[3]=$table3->build_table();
+		$table_pos[3]='<div id="view"></div>';
+		
+		$table4=new Table(4,4,16,'summary');
+		$table_obj[4]=$table4->build_table();
+		$table_pos[4]='<div id="summary"></div>';
+		
+		for($i=0;$i<count($table_obj);$i++) {
+			$arg1=$table_obj[$i];
+			$arg2=$table_pos[$i];
+			$placeholder=$this->into_div($arg2,$arg1,$this->my_interface);
+			
+			$this->my_interface=$placeholder;
+		}
+		
+		return $this->my_interface;
 	}
 	
 	public function set_ui() {
-		$this->my_ui = '<div id="tabs"><ul><li><a href="#start"><span>Start Page</span></a></li><li><a href="#tracker"><span>Tech Tracker</span></a></li><li><a href="#precheck"><span>Precheck</span></a></li><li><a href="#view"><span>View Activation</span></a></li><li><a href="#summary"><span>Activation Summary</span></a></li></ul><div id="start"></div><div id="tracker"></div><div id="precheck"></div><div id="view"></div><div id="summary"></div></div>';
+		$this->my_interface = '<div id="tabs"><ul><li><a href="#start"><span>Start Page</span></a></li><li><a href="#tracker"><span>Tech Tracker</span></a></li><li><a href="#precheck"><span>Precheck</span></a></li><li><a href="#view"><span>View Activation</span></a></li><li><a href="#summary"><span>Activation Summary</span></a></li></ul><div id="start"></div><div id="tracker"></div><div id="precheck"></div><div id="view"></div><div id="summary"></div></div>';
 	}
 
-	private function into_div($string,$insert,$div_position) {
-		$new_string=str_replace($div_position,$insert,$string);
+	private function into_div($div_pos,$insert,$string) {
+		$new_string=str_replace($div_pos,$insert,$string);
 		return $new_string;
 	}
 
@@ -117,7 +139,7 @@ class Table extends Presenter {
 	public function build_table() {
 		$div_counter=0;
 		$table_construct='';
-		$table_construct=$table_construct .  '<div id="start"><table style="border:1px solid black;" id="' . $this->thandle . '_table">';
+		$table_construct=$table_construct .  '<div id="' . $this->thandle . '"><table style="border:1px solid black;" id="' . $this->thandle . '_table">';
 		for($i=0;$i<$this->trows;$i++) {
 			$table_construct=$table_construct .  "<tr>";
 				for($z=0;$z<$this->tcols;$z++) {
