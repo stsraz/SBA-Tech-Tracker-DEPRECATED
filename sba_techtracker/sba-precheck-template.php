@@ -5,6 +5,7 @@
 */
 
 //Add my scripts to Wordpress
+
 function sba_precheck_scripts() {
 	// jQuery and jQuery UI
 	wp_register_style( 'jq-ui-css', get_bloginfo('stylesheet_directory') . '/sba_techtracker/CSS/jquery-ui.css' );
@@ -41,21 +42,19 @@ add_action( 'wp_enqueue_scripts', 'sba_precheck_scripts' );
 
 get_header();
 
-if(session_status() == PHP_SESSION_NONE) {
-	session_start();
-}
+//if(session_status() == PHP_SESSION_NONE) {
+	//session_start();
+//}
 if (!is_user_logged_in()) {
 	auth_redirect();
 }
-$username=wp_get_current_user()->user_login;
-
-$logic=new Logic($username);
-$presenter=new Start($logic);
-(new Router($presenter))->do_action();
 
 ?>
 
-<section class = 'content'></section>
+<section class = 'content'>
+	<div id="test"></div>
+	<div id="content"></div>
+</section>
 
 <?php 
 get_sidebar();

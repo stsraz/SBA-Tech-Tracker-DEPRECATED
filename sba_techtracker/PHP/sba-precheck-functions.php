@@ -3,33 +3,35 @@
 function sba_precheck_callback() {
     //Checks the source of the ajax call.
     check_ajax_referer( 'sba-security-string', 'security');
-
-	$response = (new Router($presenter))->do_action();
-	return $response;
+	
+	$action=$_POST['type'];
+	$tab=$_POST['tab'];
+	$username=wp_get_current_user()->user_login;
+	$logic=new Logic($username);
+	$presenter=new Presenter($logic);
+	$router=new Router($presenter);
+	$response=$router->do_action($action,$tab);
+	echo $response;
 }
 add_action( 'wp_ajax_precheck_callback', 'sba_precheck_callback');
 
 class Router {
 	private $presenter;
 	
-	private function __construct(Presenter $presenter) {
+	public function __construct(Presenter $presenter) {
 		$this->presenter=$presenter;
 		
 	}
-	public function do_action() {
-	    if (!isset($_POST['type'])) {
-	    	return;
-		}
-        $response = $this->$presenter->$_POST['type']();
+	public function do_action($action,$tab) {
+        $response = $this->presenter->$action($tab);
 		return $response;
-		die();
 	}
 }
 
 class Logic {
 	private $username;
 	
-	private function __construct($username) {
+	public function __construct($username) {
 		$this->username=$username;
 	}
 
@@ -38,45 +40,36 @@ class Logic {
 		foreach($result as $store) {
 			echo "<option>" . $store['store_number'] . " - " . $store['assigned_sa_tech'] . "</option>";
 		}
-		die();
 	}
 	
 }
 
 class Presenter {
-	private $sba_logic;
+	private $my_logic;
+	public $my_ui;
+	public $start_div;
 	
-	private function __construct(Logic $logic) {
-		$this->sba_logic=$logic;
+	public function __construct(Logic $logic) {
+		$this->my_logic=$logic;
+		$this->set_ui();
 	}
 	
-	public function add_tabs() {
-		echo <<<TABS
-		<div id="tabs">
-			<ul>
-				<li><a href="#start"><span>Start Page</span></a></li>
-				<li><a href="#tracker"><span>Tech Tracker</span></a></li>
-				<li><a href="#precheck"><span>Precheck</span></a></li>
-				<li><a href="#view"><span>View Activation</span></a></li>
-				<li><a href="#summary"><span>Activation Summary</span></a></li>
-			</ul>
-			<div id="start">
-				
-			</div>
-			<div id="tracker">
-			
-			</div>
-			<div id="precheck">
-				
-			</div>
-			<div id="view">
-			
-			</div>
-			<div id="summary">
-			
-			</div>
-		</div>
-TABS;
+	public function populate($tab) {
+		$table=new Table(4,4,16,$tab);
+		$table_obj=$table->build_table();
+		$table_pos='<div id="'.$tab.'"></div>';
+		$placeholder = $this->into_div($this->my_ui, $table_obj, $table_pos);
+		$this->my_ui=$placeholder;
+		return $this->my_ui;
+	}
+	
+	public function set_ui() {
+		$this->my_ui = '<div id="tabs"><ul><li><a href="#start"><span>Start Page</span></a></li><li><a href="#tracker"><span>Tech Tracker</span></a></li><li><a href="#precheck"><span>Precheck</span></a></li><li><a href="#view"><span>View Activation</span></a></li><li><a href="#summary"><span>Activation Summary</span></a></li></ul><div id="start"></div><div id="tracker"></div><div id="precheck"></div><div id="view"></div><div id="summary"></div></div>';
+	}
+
+	private function into_div($string,$insert,$div_position) {
+		$new_string=str_replace($div_position,$insert,$string);
+		return $new_string;
 	}
 
 	public function add_store_list() {
@@ -91,11 +84,54 @@ STORELIST;
 	}
 }
 
-class Start extends Presenter {
-	private function __construct(Logic $logic) {
-		parent::construct($logic);
-		parent::add_tabs();
-		parent::add_store_list();
+class Table extends Presenter {
+	private $tcols;
+	private $trows;
+	private $tdivs;
+	private $thandle;
+	public $table='';
+	
+	public function __construct($cols,$rows,$divs,$div_handle) {
+		$this->set_cols($cols);
+		$this->set_rows($rows);
+		$this->set_divs($divs);
+		$this->set_div_handle($div_handle);
+	}
+	
+	public function set_cols($cols) {
+		$this->tcols=$cols;
+	}
+	
+	public function set_rows($rows) {
+		$this->trows=$rows;
+	}
+	
+	public function set_divs($divs) {
+		$this->tdivs=$divs;
+	}
+	
+	public function set_div_handle($div_handle) {
+		$this->thandle=$div_handle;
+	}
+	
+	public function build_table() {
+		$div_counter=0;
+		$table_construct='';
+		$table_construct=$table_construct .  '<div id="start"><table style="border:1px solid black;" id="' . $this->thandle . '_table">';
+		for($i=0;$i<$this->trows;$i++) {
+			$table_construct=$table_construct .  "<tr>";
+				for($z=0;$z<$this->tcols;$z++) {
+					$table_construct=$table_construct .  "<td>";
+						if($div_counter<$this->tdivs) {
+							$table_construct=$table_construct .  "<div id='" . $this->thandle . "_" . $div_counter . "'></div>";
+							$div_counter++;
+						}
+					$table_construct=$table_construct .  "</td>";
+				}
+			$table_construct=$table_construct .  "</tr>";
+		}
+		$table_construct=$table_construct .  "</table></div>";
+		return $table_construct;
 	}
 }
 
