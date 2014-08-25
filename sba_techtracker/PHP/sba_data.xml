@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sba_data>
+	<user>
+		<sa_tech location="broomfield">Joe Rasmussen</sa_tech>
+		<sa_tech location="phoenix">Jason Connett</sa_tech>
+		<lead location="broomfield">Brendan Leslie</lead>
+		<pmo location="broomfield">Raul Castillo</pmo>
+	</user>
+	<sba_tab_layout>
+		<sba_tab handle="start" tables="4">
+			<table handle="start_zero" rows="1" cols="1" divs="1"></table>
+			<table handle="start_one" rows="1" cols="1" divs="1"></table>
+			<table handle="start_two" rows="1" cols="1" divs="1"></table>
+			<table handle="start_three" rows="1" cols="1" divs="1"></table>
+		</sba_tab>
+		<sba_tab handle="tracker" tables="">
+			<table handle="tracker_zero" rows="1" cols="1" divs="1"></table>
+		</sba_tab>
+		<sba_tab handle="precheck" tables="2">
+			<table handle="precheck_zero" rows="1" cols="2" divs="2"></table>
+			<table handle="precheck_one" rows="1" cols="2" divs="2"></table>
+		</sba_tab>
+		<sba_tab handle="view" tables="2">
+			<table handle="view_zero" rows="1" cols="2" divs="2"></table>
+			<table handle="view_one" rows="1" cols="2" divs="2"></table>
+		</sba_tab>
+		<sba_tab handle="summary" tables="2">
+			<table handle="summary_zero" rows="1" cols="2" divs="2"></table>
+			<table handle="summary_one" rows="1" cols="2" divs="2"></table>
+		</sba_tab>		
+	</sba_tab_layout>
+	<static_data>
+		<div handle="#start_zero0" data="SBA Tracker Advanced"></div>
+		<div handle="#start_one0" data="Now with added fiber!"></div>
+		<div handle="#start_two0" data="Select a utility from the tabs above."></div>
+		<div handle="#start_three0" data="Patch Notes: "></div>
+	</static_data>
+</sba_data>

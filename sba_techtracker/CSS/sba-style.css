@@ -1,0 +1,14 @@
+#tabs {
+	font-size:small;
+}
+
+.my_table {
+	width:100%;
+	border:1px solid black;
+	margin-top:25px;
+	margin-bottom:25px;
+}
+
+td {
+	border:1px solid black;
+}
