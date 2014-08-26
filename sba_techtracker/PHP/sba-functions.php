@@ -41,12 +41,14 @@ class Presenter {
 	}
 	
 	public function populate_my_dom() {
+		// Create the tabs and tables
 		$start_tab=new Tabs(0);
 		$tracker_tab=new Tabs(1);
 		$precheck_tab=new Tabs(2);
 		$view_tab=new Tabs(3);
 		$summary_tab=new Tabs(4);
-				
+		
+		// Add tabs to the ui
 		$tab_array=array($start_tab,$tracker_tab,$precheck_tab,$view_tab,$summary_tab);
 		foreach($tab_array as $tab) {
 			$tous=$tab->set_tables();
@@ -56,6 +58,17 @@ class Presenter {
 			$tab_div=$this->my_logic->into_div($div_pos, $insert, $string);
 			$this->my_interface=$tab_div;
 		}
+		
+		// Create button bars
+		$tracker_bar1=new ButtonBar();
+		
+		// Add button bars to the ui
+		$bar_array=array($tracker_bar1);
+		foreach($bar_array as $bar) {
+			$bous=$bar->set_bars();
+			$div_pos='<div id='/////////////////////////////////////////////////////////////////////////////////
+		}
+
 		return $this->my_interface;
 	}
 
@@ -63,6 +76,53 @@ class Presenter {
 		$static_array=array();
 		$static_array=$this->my_logic->get_xml("static_data","div");
 		return $static_array;
+	}
+}
+
+class ButtonBar extends Presenter {
+	public $bar_id;
+	public $bar_location;
+	public $bar_css_class;
+	public $num_buttons;
+	public $button_ids;
+	public $button_values;
+	
+	public function __construct($bar_id,$bar_location,$bar_css_class,$button_ids,$button_values,$num_buttons) {
+		$this->set_bar_id($bar_id);
+		$this->set_bar_location($bar_location);
+		$this->set_bar_css_class($bar_css_class);
+		$this->set_num_buttons($num_buttons);
+		$this->set_button_ids($button_ids);
+		$this->set_button_values($button_values);
+	}
+	
+	public function set_bar_id($bar_id) {
+		$this->bar_id=$bar_id;
+	}
+	public function set_bar_location($bar_location) {
+		$this->bar_location=$bar_location;
+	}
+	public function set_bar_css_class($bar_css_class) {
+		$this->bar_css_class=$bar_css_class;
+	}
+	public function set_num_buttons($num_buttons) {
+		$this->num_buttons=$num_buttons;
+	}
+	public function set_button_ids($button_ids) {
+		$this->button_ids=$button_ids;
+	}
+	public function set_button_values($button_values) {
+		$this->button_values=$button_values;
+	}
+	
+	public function build_button_bar() {
+		$bar_construct;
+		$bar_construct=$bar_construct."<div id='".$this->bar_id."' class='".$this->bar_css_class."'>";
+		for($i=0;$i<$this->num_buttons;$i++) {
+			$bar_construct=$bar_construct."<button id='".$this->button_ids[$i]."'>".$this->button_values[$i]."</button>";
+		}
+		$bar_construct=$bar_construct."</div>";
+		return $bar_construct;
 	}
 }
 
@@ -121,6 +181,7 @@ class Tabs extends Presenter {
 // A class that creates the tab structure and populates them with tables.
 	public $SBAXML_obj;
 	public $tab_prop;
+	public $bar_prop;
 
 	public $insert;
 		
@@ -128,6 +189,7 @@ class Tabs extends Presenter {
 		$this->SBAXML_obj=new SBAXML();
 		//Store tab properties
 		$this->tab_prop=$this->SBAXML_obj->get_tab($rti);
+		$this->bar_prop=$this->SBAXML_obj->get_bar($rti);
 	}
 	
 	public function set_tables() {
@@ -156,6 +218,31 @@ class Tabs extends Presenter {
 		return $tous;
 	}
 	
+	public function set_bars() {
+		$temp_obj;
+		$holding_cell=array();
+		$bous=array();
+		$insert;
+		$bar_id=$this->bar_prop['id'];
+		$bar_location=$this->bar_prop['location'];
+		$bar_css_class=$this->bar_prop['class'];
+		$num_buttons=$this->bar_prop['num_buttons'];
+		
+		for($i=0;$i<$this->bar_prop['num_buttons'];$i++) {
+			$button_id=$this->bar_prop["button".$i]['id'];
+			$button_value=$this->bar_prop['button'.$i]['value'];
+			$button_ids=$this->bar_prop['button'.$i]['id'];
+			$button_values=$this->bar_prop['button'.$i]['value'];
+			$temp_obj=new ButtonBar($bar_id,$bar_location,$bar_css_class,$button_ids,$button_values,$num_buttons);
+			$holding_cell[$i]=$temp_obj->build_button_bar();
+		}
+		$insert=implode($holding_cell);
+		$bous['id']=$bar_id;
+		$bous['insert']=$insert;
+		
+		return $bous;
+		
+	}
 }
 
 class Logic {
@@ -184,7 +271,6 @@ class SBAXML extends Logic{
 // A class that creates an object that retrieves and manipulates sba_data.xml
 	public $sba_xml;
 	public function __construct() {
-		//$sba_xml;
 		$xml_path='http://localhost/wp-content/themes/hueman-child/sba_techtracker/PHP/sba_data.xml';
 		$this->sba_xml=simplexml_load_file($xml_path);
 		return $this->sba_xml;
@@ -231,6 +317,20 @@ class SBAXML extends Logic{
 			}
 		}
 		return $this_tab;
+	}
+	
+	public function get_bar($rti) {
+		$this_bar=array();
+		
+		foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->button_bar->attributes() as $key=>$pair) {
+			$this_bar[$key]=$pair;
+		}
+		for($i=0;$i<$this_bar['num_buttons'];$i++) {
+			foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->button_bar->button->attributes as $key=>$pair) {
+				$this_bar['button'.$i][$key]=$pair;
+			}
+		}
+		return $this_bar;
 	}
 	
 }

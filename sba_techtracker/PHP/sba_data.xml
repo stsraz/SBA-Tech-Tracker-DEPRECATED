@@ -13,8 +13,17 @@
 			<table handle="start_two" rows="1" cols="1" divs="1"></table>
 			<table handle="start_three" rows="1" cols="1" divs="1"></table>
 		</sba_tab>
-		<sba_tab handle="tracker" tables="">
-			<table handle="tracker_zero" rows="1" cols="1" divs="1"></table>
+		<sba_tab handle="tracker" tables="1" num_bars="2">
+			<table handle="tracker_zero" rows="1" cols="1" divs="2"></table>
+			<button_bar id="tracker_bb1" location="tracker_zero0" class="ui-widget-header ui-corner-all" num_buttons="3">
+				<button id="back" value="Back"></button>
+				<button id="pause" value="Pause"></button>
+				<button id="next" value="Next"></button>
+			</button_bar>
+			<button_bar id="tracker_bb2" location="tracker_zero1" class="ui-widget-header ui-corner-all" num_buttons="2">
+				<button id="help" value="Help"></button>
+				<button id="abort" value="Abort"></button>
+			</button_bar>
 		</sba_tab>
 		<sba_tab handle="precheck" tables="2">
 			<table handle="precheck_zero" rows="1" cols="2" divs="2"></table>
