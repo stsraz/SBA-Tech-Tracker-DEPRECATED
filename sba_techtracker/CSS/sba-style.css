@@ -1,3 +1,7 @@
+td {
+	border:1px solid black;
+}
+
 #tabs {
 	font-size:small;
 }
@@ -5,10 +9,21 @@
 .my_table {
 	width:100%;
 	border:1px solid black;
-	margin-top:25px;
-	margin-bottom:25px;
+	margin-top:0px;
+	margin-bottom:20px;
 }
 
-td {
-	border:1px solid black;
+.my_buttonbar {
+	width:50%;
+	text-align:center;
+}
+
+.my_button {
+	margin-right:20px;
+	margin-left:20px;
+}
+
+.buttonset {
+	padding:4px;
+	display:inline-block;
 }

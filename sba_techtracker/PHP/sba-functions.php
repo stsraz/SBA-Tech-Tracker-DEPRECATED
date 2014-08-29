@@ -35,6 +35,8 @@ class Presenter {
 // A class that displays data on the page and hold the methods for the Router object.
 	public $my_logic;
 	public $my_interface='<div id="tabs"><ul><li><a href="#start"><span>Start Page</span></a></li><li><a href="#tracker"><span>Tech Tracker</span></a></li><li><a href="#precheck"><span>Precheck</span></a></li><li><a href="#view"><span>View Activation</span></a></li><li><a href="#summary"><span>Activation Summary</span></a></li></ul><div id="start"></div><div id="tracker"></div><div id="precheck"></div><div id="view"></div><div id="summary"></div></div>';
+	public $tab_names=array('start_tab','tracker_tab','precheck_tab','view_tab','summary_tab');
+	public $tab_array;
 	
 	public function __construct(Logic $logic) {
 		$this->my_logic=$logic;
@@ -42,14 +44,11 @@ class Presenter {
 	
 	public function populate_my_dom() {
 		// Create the tabs and tables
-		$start_tab=new Tabs(0);
-		$tracker_tab=new Tabs(1);
-		$precheck_tab=new Tabs(2);
-		$view_tab=new Tabs(3);
-		$summary_tab=new Tabs(4);
-		
+		for($i=0;$i<count($this->tab_names);$i++) {
+			$tab_array[$i]=new Tabs($i);
+		}
+
 		// Add tabs to the ui
-		$tab_array=array($start_tab,$tracker_tab,$precheck_tab,$view_tab,$summary_tab);
 		foreach($tab_array as $tab) {
 			$tous=$tab->set_tables();
 			$div_pos='<div id="' . $tous['handle'] . '"></div>';
@@ -59,23 +58,7 @@ class Presenter {
 			$this->my_interface=$tab_div;
 		}
 		
-		// Create button bars
-		$tracker_bar1=new ButtonBar();
-		
-		// Add button bars to the ui
-		$bar_array=array($tracker_bar1);
-		foreach($bar_array as $bar) {
-			$bous=$bar->set_bars();
-			$div_pos='<div id='/////////////////////////////////////////////////////////////////////////////////
-		}
-
 		return $this->my_interface;
-	}
-
-	public function get_static_data() {
-		$static_array=array();
-		$static_array=$this->my_logic->get_xml("static_data","div");
-		return $static_array;
 	}
 }
 
@@ -86,6 +69,7 @@ class ButtonBar extends Presenter {
 	public $num_buttons;
 	public $button_ids;
 	public $button_values;
+	public $this_bar;
 	
 	public function __construct($bar_id,$bar_location,$bar_css_class,$button_ids,$button_values,$num_buttons) {
 		$this->set_bar_id($bar_id);
@@ -94,6 +78,9 @@ class ButtonBar extends Presenter {
 		$this->set_num_buttons($num_buttons);
 		$this->set_button_ids($button_ids);
 		$this->set_button_values($button_values);
+		
+		$this->this_bar=$this->build_button_bar();
+		return $this->this_bar;
 	}
 	
 	public function set_bar_id($bar_id) {
@@ -114,14 +101,16 @@ class ButtonBar extends Presenter {
 	public function set_button_values($button_values) {
 		$this->button_values=$button_values;
 	}
-	
+	public function get_button_bar_string() {
+		return $this->this_bar;
+	}
 	public function build_button_bar() {
-		$bar_construct;
-		$bar_construct=$bar_construct."<div id='".$this->bar_id."' class='".$this->bar_css_class."'>";
+		$bar_construct='';
+		$bar_construct=$bar_construct."<td class='my_buttonbar'><div id='".$this->bar_id."' class='".$this->bar_css_class."'><span class='buttonset'>";
 		for($i=0;$i<$this->num_buttons;$i++) {
-			$bar_construct=$bar_construct."<button id='".$this->button_ids[$i]."'>".$this->button_values[$i]."</button>";
+			$bar_construct=$bar_construct."<span class='my_button'><button id='".$this->button_ids[$i]."'>".$this->button_values[$i]."</button></span>";
 		}
-		$bar_construct=$bar_construct."</div>";
+		$bar_construct=$bar_construct."</span></div></td>";
 		return $bar_construct;
 	}
 }
@@ -180,21 +169,18 @@ class Table extends Presenter {
 class Tabs extends Presenter {
 // A class that creates the tab structure and populates them with tables.
 	public $SBAXML_obj;
-	public $tab_prop;
-	public $bar_prop;
-
-	public $insert;
-		
+	public $tab_prop=array();
+	
 	public function __construct($rti) {
 		$this->SBAXML_obj=new SBAXML();
 		//Store tab properties
-		$this->tab_prop=$this->SBAXML_obj->get_tab($rti);
-		$this->bar_prop=$this->SBAXML_obj->get_bar($rti);
+		$this->tab_prop=$this->SBAXML_obj->get_tab_prop($rti);
 	}
 	
 	public function set_tables() {
 		$temp_obj;
 		$holding_cell=array();
+		$bbars=array();
 		$tous=array();
 		$insert;
 		$tab_handle=$this->tab_prop['handle'];
@@ -202,46 +188,64 @@ class Tabs extends Presenter {
 		$div_wrapper_close="</div>";
 		
 		for($i=0;$i<$this->tab_prop['tables'];$i++) {
-			$tbl_handle=$this->tab_prop["table".$i]['handle'];
-			$tbl_rows=$this->tab_prop["table".$i]['rows'];
-			$tbl_cols=$this->tab_prop["table".$i]['cols'];
-			$tbl_divs=$this->tab_prop["table".$i]['divs'];
+			$tbl_handle=$this->tab_prop['table'.$i]['handle'];
+			$tbl_rows=$this->tab_prop['table'.$i]['rows'];
+			$tbl_cols=$this->tab_prop['table'.$i]['cols'];
+			$tbl_divs=$this->tab_prop['table'.$i]['divs'];
 			$temp_obj=new Table($tbl_cols,$tbl_rows,$tbl_divs,$tbl_handle);
-			$holding_cell[$i]=$temp_obj->build_table();
+			$holding_cell['table'.$i]=$temp_obj->build_table();
+			
+			if($this->tab_prop['bbars']!='0') {
+				for($y=0;$y<$this->tab_prop['bbars'];$y++) {
+					if($this->tab_prop['table'.$i]['bar']=='true') {
+						// Set temporary local variables to hold the button bar properties passed to the ButtonBar constructor
+						$temp_id=$this->tab_prop['table'.$i]['button_bar'.$y]['handle'];
+						$temp_location=$this->tab_prop['table'.$i]['button_bar'.$y]['location'];
+						$temp_class=$this->tab_prop['table'.$i]['button_bar'.$y]['class'];
+						$temp_num_buttons=$this->tab_prop['table'.$i]['button_bar'.$y]['buttons'];
+						$temp_button_ids=array();
+						$temp_button_values=array();
+						for($z=0;$z<$temp_num_buttons;$z++) {
+							$temp_button_ids[$z]=$this->tab_prop['table'.$i]['button_bar'.$y]['button'.$z]['handle'];
+							$temp_button_values[$z]=$this->tab_prop['table'.$i]['button_bar'.$y]['button'.$z]['value'];
+						}
+						$bbar=new ButtonBar($temp_id,$temp_location,$temp_class,$temp_button_ids,$temp_button_values,$temp_num_buttons);
+						// Insert new button bar string into the appropriate spot in the table string (In the right array slot, in the right div)
+						$div_pos="<td><div id='".$temp_location."'></div></td>";
+						$insert=$bbar->get_button_bar_string();
+						$string=$holding_cell['table'.$i];
+						$bbar_table=$this->SBAXML_obj->into_div($div_pos, $insert, $string);
+						// Store the new table with the button bar
+						$holding_cell['table'.$i]=$bbar_table;
+					}
+				}
+			}
+
+			if($this->tab_prop['num_divs']!='0') {
+				for($y=0;$y<$this->tab_prop['num_divs'];$y++) {
+					if($this->tab_prop['table'.$i]['has_div']=='true') {
+						$temp_id=$this->tab_prop['table'.$i]['div'.$y]['handle'];
+						$temp_data=$this->tab_prop['table'.$i]['div'.$y]['data'];
+						$div_pos="<td><div id='".$temp_id."'></div></td>";
+						$insert='<p>'.$temp_data.'</p>';
+						$string=$holding_cell['table'.$i];
+						
+						$div_table=$this->SBAXML_obj->into_div($div_pos, $insert, $string);
+						$holding_cell['table'.$i]=$div_table;
+					}
+				}
+			}
 		}
+		
 		array_unshift($holding_cell,$div_wrapper_open);
 		$holding_cell[]=$div_wrapper_close;
 		$insert=implode($holding_cell);
+		
+		
 		$tous['handle']=$tab_handle;
 		$tous['insert']=$insert;
 		
 		return $tous;
-	}
-	
-	public function set_bars() {
-		$temp_obj;
-		$holding_cell=array();
-		$bous=array();
-		$insert;
-		$bar_id=$this->bar_prop['id'];
-		$bar_location=$this->bar_prop['location'];
-		$bar_css_class=$this->bar_prop['class'];
-		$num_buttons=$this->bar_prop['num_buttons'];
-		
-		for($i=0;$i<$this->bar_prop['num_buttons'];$i++) {
-			$button_id=$this->bar_prop["button".$i]['id'];
-			$button_value=$this->bar_prop['button'.$i]['value'];
-			$button_ids=$this->bar_prop['button'.$i]['id'];
-			$button_values=$this->bar_prop['button'.$i]['value'];
-			$temp_obj=new ButtonBar($bar_id,$bar_location,$bar_css_class,$button_ids,$button_values,$num_buttons);
-			$holding_cell[$i]=$temp_obj->build_button_bar();
-		}
-		$insert=implode($holding_cell);
-		$bous['id']=$bar_id;
-		$bous['insert']=$insert;
-		
-		return $bous;
-		
 	}
 }
 
@@ -249,7 +253,6 @@ class Logic {
 // A class that handles data retrieval and manipulation
 	public $username;
 	public $xml_obj;
-	
 	public function __construct($username) {
 		$this->username=$username;
 		$this->xml_obj=new SBAXML();
@@ -259,12 +262,6 @@ class Logic {
 		$new_string=str_replace($div_pos,$insert,$string);
 		return $new_string;
 	}
-	
-	public function get_xml($parent,$child) {
-		$requested_xml=$this->xml_obj->get_requested_xml($parent,$child);
-		return $requested_xml;
-	}
-	
 }
 
 class SBAXML extends Logic{
@@ -276,33 +273,7 @@ class SBAXML extends Logic{
 		return $this->sba_xml;
 	}
 	
-	public function get_requested_xml($parent,$child) {
-		$temp_array=array();
-		$temp_string=$this->sba_xml->$parent->$child;
-		for($i=0;$i<count($this->sba_xml->$parent->$child);$i++) {
-			foreach($temp_string[$i]->attributes() as $key=>$pair) {
-				$temp_array[$i][$key]=$pair;
-			}
-		};
-		$temp_array=json_encode($temp_array);
-		return $temp_array;
-	}
-	
-	public function get_location($username) {
-		$user_location;
-		for($i=0;$i<count($this->sba_xml->user);$i++) {
-			$user=$this->sba_xml->user[$i];
-			if($user==$username) {
-				foreach($this->sba_xml->user[$i]->attributes() as $key=>$pair) {
-					$user_location=$pair;
-				}
-				break;
-			}
-		}
-		return $user_location;
-	}
-
-	public function get_tab($rti) {
+	public function get_tab_prop($rti) {
 	//Pulls the requested tab data from the sba_xml doc
 
 		$this_tab=array();	//Holds the tab the function will return
@@ -310,29 +281,32 @@ class SBAXML extends Logic{
 		foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->attributes() as $key=>$pair) {
 			$this_tab[$key]=$pair;
 		}
-		for($i=0;$i<count($this->sba_xml->sba_tab_layout->sba_tab[$rti]);$i++) {
-			$table_var='table'.$i;
+		for($i=0;$i<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['tables'];$i++) {
 			foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->attributes() as $key=>$pair) {
-				$this_tab["table".$i][$key]=$pair;
+				$this_tab['table'.$i][$key]=$pair;
+				if($key=='bar' and $pair=='true') {
+					for($x=0;$x<count($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->button_bar);$x++) {
+						foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->button_bar[$x]->attributes() as $key=>$pair) {
+							$this_tab['table'.$i]['button_bar'.$x][$key]=$pair;
+						}
+						for($y=0;$y<$this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->button_bar[$x]['buttons'];$y++) {
+							foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->button_bar[$x]->button[$y]->attributes() as $key=>$pair) {
+							$this_tab['table'.$i]['button_bar'.$x]['button'.$y][$key]=$pair;
+							}
+						}
+					}
+				}
+				if($key=='has_div' and $pair=='true') {
+					for($x=0;$x<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['num_divs'];$x++) {
+						foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->div[$x]->attributes() as $key=>$pair) {
+							$this_tab['table'.$i]['div'.$x][$key]=$pair;
+						}
+					};
+				}
 			}
 		}
 		return $this_tab;
 	}
-	
-	public function get_bar($rti) {
-		$this_bar=array();
-		
-		foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->button_bar->attributes() as $key=>$pair) {
-			$this_bar[$key]=$pair;
-		}
-		for($i=0;$i<$this_bar['num_buttons'];$i++) {
-			foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->button_bar->button->attributes as $key=>$pair) {
-				$this_bar['button'.$i][$key]=$pair;
-			}
-		}
-		return $this_bar;
-	}
-	
 }
 
 abstract class Database {

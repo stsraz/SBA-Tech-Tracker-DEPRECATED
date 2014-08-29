@@ -7,41 +7,37 @@
 		<pmo location="broomfield">Raul Castillo</pmo>
 	</user>
 	<sba_tab_layout>
-		<sba_tab handle="start" tables="4">
-			<table handle="start_zero" rows="1" cols="1" divs="1"></table>
-			<table handle="start_one" rows="1" cols="1" divs="1"></table>
-			<table handle="start_two" rows="1" cols="1" divs="1"></table>
-			<table handle="start_three" rows="1" cols="1" divs="1"></table>
+		<sba_tab handle="start" tables="1" bbars="0" num_divs="0">
+			<table handle="start_zero" rows="1" cols="1" divs="1" bar="false" has_div="false"></table>
 		</sba_tab>
-		<sba_tab handle="tracker" tables="1" num_bars="2">
-			<table handle="tracker_zero" rows="1" cols="1" divs="2"></table>
-			<button_bar id="tracker_bb1" location="tracker_zero0" class="ui-widget-header ui-corner-all" num_buttons="3">
-				<button id="back" value="Back"></button>
-				<button id="pause" value="Pause"></button>
-				<button id="next" value="Next"></button>
-			</button_bar>
-			<button_bar id="tracker_bb2" location="tracker_zero1" class="ui-widget-header ui-corner-all" num_buttons="2">
-				<button id="help" value="Help"></button>
-				<button id="abort" value="Abort"></button>
-			</button_bar>
+		<sba_tab handle="tracker" tables="2" bbars="2" num_divs="1">
+			<table handle="tracker_zero" rows="1" cols="2" divs="2" bar="true" has_div="false">
+				<button_bar handle="tracker_bb1" location="tracker_zero0" class="ui-widget-header ui-corner-all" buttons="3">
+					<button handle="back" value="Back"></button>
+					<button handle="pause" value="Pause"></button>
+					<button handle="next" value="Next"></button>
+				</button_bar>
+				<button_bar handle="tracker_bb2" location="tracker_zero1" class="ui-widget-header ui-corner-all" buttons="2">
+					<button handle="help" value="Help"></button>
+					<button handle="abort" value="Abort"></button>
+				</button_bar>
+			</table>
+			<table handle="tracker_one" rows="2" cols="1" divs="2" bar="false" has_div="true">
+				<!-- Placeholder <div handle="tracker_one0" data="jQuery will populate this div" -->
+				<div handle="tracker_one1" data="Your scheduled store information is below."></div>
+			</table>
 		</sba_tab>
-		<sba_tab handle="precheck" tables="2">
-			<table handle="precheck_zero" rows="1" cols="2" divs="2"></table>
-			<table handle="precheck_one" rows="1" cols="2" divs="2"></table>
+		<sba_tab handle="precheck" tables="2" bbars="0" num_divs="0">
+			<table handle="precheck_zero" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
+			<table handle="precheck_one" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
 		</sba_tab>
-		<sba_tab handle="view" tables="2">
-			<table handle="view_zero" rows="1" cols="2" divs="2"></table>
-			<table handle="view_one" rows="1" cols="2" divs="2"></table>
+		<sba_tab handle="view" tables="2" bbars="0" num_divs="0">
+			<table handle="view_zero" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
+			<table handle="view_one" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
 		</sba_tab>
-		<sba_tab handle="summary" tables="2">
-			<table handle="summary_zero" rows="1" cols="2" divs="2"></table>
-			<table handle="summary_one" rows="1" cols="2" divs="2"></table>
+		<sba_tab handle="summary" tables="2" bbars="0" num_divs="0">
+			<table handle="summary_zero" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
+			<table handle="summary_one" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
 		</sba_tab>		
 	</sba_tab_layout>
-	<static_data>
-		<div handle="#start_zero0" data="SBA Tracker Advanced"></div>
-		<div handle="#start_one0" data="Now with added fiber!"></div>
-		<div handle="#start_two0" data="Select a utility from the tabs above."></div>
-		<div handle="#start_three0" data="Patch Notes: "></div>
-	</static_data>
 </sba_data>
