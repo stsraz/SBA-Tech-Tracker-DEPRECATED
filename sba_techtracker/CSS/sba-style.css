@@ -27,3 +27,8 @@ td {
 	padding:4px;
 	display:inline-block;
 }
+
+#tracker_one_table td {
+	width: 33%;
+	text-align: center;
+}

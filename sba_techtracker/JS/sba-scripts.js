@@ -42,7 +42,10 @@ function do_action(type,response) {
 				jQuery("#tracker_bb1").buttonset();
 				jQuery("#tracker_bb2").buttonset();
 			});
-			jQuery(".my_buttonbar").hide();
+			//jQuery(".my_buttonbar").hide();
+			jQuery('#tracker_one3').countdown({since: 0, format: "HMS", compact: true});
+			jQuery('#tracker_one4').countdown({until: '+15m', format:"MS", compact: true});
+			jQuery('#tracker_one5').countdown({since: 0, format:"HM", compact: true});
 			break;
 	}
 }
@@ -58,6 +61,18 @@ jQuery(function() {
 		_create: function() {
 			this.element
 				.append(this.options.response);
+		}
+	});
+	// A widget to populate divs with jQuery timers
+	jQuery.widget("sba.insert_timer", {
+		// Default options
+		options: {
+			until: null,
+			since: null
+		},
+		
+		_create: function() {
+			
 		}
 	});
 });

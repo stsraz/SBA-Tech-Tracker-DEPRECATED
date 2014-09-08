@@ -166,6 +166,149 @@ class Table extends Presenter {
 	}
 }
 
+class SelectMenu extends Presenter {
+// A class that creates a select menu populated with data from the database
+	public $label_value;
+	public $select_id;
+	public $options_array=array();
+	
+	public function __construct($label_value,$select_id,$options_array) {
+		$this->set_label_value($label_value);
+		$this->set_select_id($select_id);
+		$this->set_options_array($options_array);
+		
+		$temp_menu=$this->build_select_menu();
+		return $temp_menu;
+	}
+	
+	public function set_label_value($label_value) {
+		$this->label_value=$label_value;
+	}
+	
+	public function set_select_id($select_id) {
+		$this->select_id=$select_id;
+	}
+	
+	public function set_options_array($options_array) {
+		$this->options_array=$options_array;
+	}
+	
+	public function build_select_menu() {
+		$select_construct='';
+		$select_construct=$select_construct.'<fieldset><label for="'.$this->select_id.'">'.$this->label_value.'</label>';
+		$select_construct=$select_construct.'<select id="'.$this->select_id.'">';
+		for($i=0;$i<count($this->options_array);$i++) {
+			$select_construct=$select_construct.'<option value="'.$this->options_array[$i]['value'].'">'.$this->options_array[$i]['display'].'</option>';
+		}
+		$select_construct=$select_construct.'</select></fieldset>';
+		return $select_construct;
+	}
+}
+
+class Store extends SelectMenu {
+	public $stores_array=array();
+	public $options_array=array();
+	
+	public function _construct($label_value, $select_id) {
+		$this->stores_array=$this->my_logic->get_stores();
+		for($i=0;$i<count($this->stores_array);$i++) {
+			foreach($this->stores_array[$i] as $key=>$pair) {
+				$this->$options_array[$i]['value']=$this->stores_array[$i];
+				$this->$options_array[$i]['display']=$this->stores_array[$i].' - '.$this->stores_array[$i]['tech_assigned'];
+			}
+		}
+		return parent::__construct($label_value, $select_id, $this->$options_array);
+	}
+}
+
+class Accordion extends Presenter {
+	public $id;
+	public $location;
+	public $num_divs;
+	public $class_array=array();
+	public $hthree_array=array();
+	public $div_handle_array=array();
+	public $acc_string;
+	
+	public function __construct($id,$location,$num_divs,$class_array,$hthree_array,$div_handle_array) {
+		$this->set_class_array($class_array);
+		$this->set_div_handle_array($div_handle_array);
+		$this->set_hthree_array($hthree_array);
+		$this->set_id($id);
+		$this->set_location($location);
+		$this->set_num_divs($num_divs);
+		
+		$this->acc_string=$this->build_accordion();
+		return $this->acc_string;
+	}
+	
+	public function set_id($id) {
+		$this->id=$id;
+	}
+	public function set_location($location) {
+		$this->location=$location;
+	}
+	public function set_num_divs($num_divs) {
+		$this->num_divs=$num_divs;
+	}
+	public function set_class_array($class_array) {
+		$this->class_array=$class_array;
+	}
+	public function set_hthree_array($hthree_array) {
+		$this->hthree_array=$hthree_array;
+	}
+	public function set_div_handle_array($div_handle_array) {
+		$this->div_handle_array=$div_handle_array;
+	}
+	
+	public function build_accordion() {
+		$accordion_construct='';
+		$accordion_construct=$accordion_construct.'<div id="'.$this->id.'">';
+		for($i=0;$i<$this->num_divs;$i++) {
+			$accordion_construct=$accordion_construct.'<div class="'.$this->class_array[$i].'"><h3>'.$this->hthree_array[$i].'</h3><div id="'.$this->div_handle_array[$i].'"></div></div></div>';
+		}
+		return $accordion_construct;
+	}
+}
+
+class ActivationInformation extends Accordion {
+	public $stores_array=array();
+	public $user_store=array();
+	public $temp_acc;
+	public $temp_tables;
+	
+	public function __construct($id,$location,$num_divs,$class_array,$hthree_array,$div_handle_array) {
+		$this->stores_array=$this->my_logic->get_stores();
+		$this->get_user_store();
+		$this->temp_acc=parent::__construct($id,$location,$num_divs,$class_array,$hthree_array,$div_handle_array);
+		$this->populate_acc_data();
+		return $this->temp_acc;
+	}
+	
+	public function get_user_store() {
+		for($i=0;$i<count($this->stores_array);$i++) {
+			if($this->stores_array[$i]['tech_assigned']==$this->my_logic->username) {
+				$temp_array=array(
+					'store_number'=>$this->stores_array[$i],
+					'scheduled'=>$this->stores_array[$i]['scheduled'],
+					'tech_working'=>$this->stores_array[$i]['tech_working'],
+					'tech_assigned'=>$this->stores_array[$i]['tech_assigned'],
+					'type'=>$this->stores_array[$i]['type'],
+					'primary_access'=>$this->stores_array[$i]['primary_access'],
+					'backup_carrier'=>$this->stores_array[$i]['backup_carrier'],
+					'eon'=>$this->stores_array[$i]['eon'],
+					'ops_console'=>$this->stores_array[$i]['ops_console'],
+					'bridge'=>$this->stores_array[$i]['bridge']);
+				$this->user_store=$temp_array;
+			}
+		}
+	}
+	
+	public function populate_acc_data() {
+		
+	}
+}
+
 class Tabs extends Presenter {
 // A class that creates the tab structure and populates them with tables.
 	public $SBAXML_obj;
@@ -186,7 +329,7 @@ class Tabs extends Presenter {
 		$tab_handle=$this->tab_prop['handle'];
 		$div_wrapper_open="<div id='" . $tab_handle . "'>";
 		$div_wrapper_close="</div>";
-		
+		// Add the tables to the holding cell
 		for($i=0;$i<$this->tab_prop['tables'];$i++) {
 			$tbl_handle=$this->tab_prop['table'.$i]['handle'];
 			$tbl_rows=$this->tab_prop['table'.$i]['rows'];
@@ -194,7 +337,7 @@ class Tabs extends Presenter {
 			$tbl_divs=$this->tab_prop['table'.$i]['divs'];
 			$temp_obj=new Table($tbl_cols,$tbl_rows,$tbl_divs,$tbl_handle);
 			$holding_cell['table'.$i]=$temp_obj->build_table();
-			
+			// If there are button bars, add them to the holding cell in the right spot
 			if($this->tab_prop['bbars']!='0') {
 				for($y=0;$y<$this->tab_prop['bbars'];$y++) {
 					if($this->tab_prop['table'.$i]['bar']=='true') {
@@ -220,18 +363,76 @@ class Tabs extends Presenter {
 					}
 				}
 			}
-
+			// If there are static data divs, add them to the holding cell in the right spot
 			if($this->tab_prop['num_divs']!='0') {
 				for($y=0;$y<$this->tab_prop['num_divs'];$y++) {
 					if($this->tab_prop['table'.$i]['has_div']=='true') {
 						$temp_id=$this->tab_prop['table'.$i]['div'.$y]['handle'];
 						$temp_data=$this->tab_prop['table'.$i]['div'.$y]['data'];
 						$div_pos="<td><div id='".$temp_id."'></div></td>";
-						$insert='<p>'.$temp_data.'</p>';
+						$insert="<td><div id='".$temp_id."'><p>".$temp_data."</p></div></td>";
 						$string=$holding_cell['table'.$i];
-						
 						$div_table=$this->SBAXML_obj->into_div($div_pos, $insert, $string);
 						$holding_cell['table'.$i]=$div_table;
+						
+					}
+				}
+			}
+			// If there are select menus, add them to the holding cell in the right spot
+			if($this->tab_prop['num_selectmenus']!='0') {
+				for($y=0;$y<$this->tab_prop['num_selectmenus'];$y++) {
+					if($this->tab_prop['table'.$i]['selectmenu'=='true']) {
+						$temp_id=$this->tab_prop['table'.$i]['select'.$y]['handle'];
+						$temp_label_value=$this->tab_prop['table'.$i]['select'.$y]['label_value'];
+						$temp_location=$this->tab_prop['table'.$i]['select'.$y]['location'];
+						$temp_obj=new Store($temp_label_value,$temp_id);
+						
+						$store_select=$temp_obj->build_select_menu();
+						$div_pos="<td><div id='".$temp_location."'></div></td>";
+						$insert="<td><div id='".$temp_location."'>".$store_select."</div></td>";
+						$string=$holding_cell['table'.$i];
+						$select_table=$this->SBAXML_obj->into_div($div_pos,$insert,$string);
+						$holding_cell['table'.$i]=$select_table;
+					}
+				}
+			}
+			// If there are accordions, add them to the holding cell in the right spot
+			if($this->tab_prop['num_accordions']!='0') {
+				for($y=0;$y<$this->tab_prop['num_accordions'];$y++) {
+					print("test".$y);
+					if($this->tab_prop['table'.$i]['accordion'=='true']) {
+						$temp_id=$this->tab_prop['table'.$i]['accordion'.$y]['handle'];
+						$temp_special_flag=$this->tab_prop['table'.$i]['accordion'.$y]['special'];
+						$temp_location=$this->tab_prop['table'.$i]['accordion'.$y]['location'];
+						$temp_ac_divs=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'];
+						$temp_class=array();
+						$temp_hthree=array();
+						$temp_div_handle=array();
+						$temp_tables=array();
+						$temp_acc_str;
+						for($x=0;$x<$temp_ac_divs;$x++) {
+							$temp_class[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['class'];
+							$temp_hthree[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['hthree'];
+							$temp_div_handle[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['div_handle'];
+							for($z=0;$z<$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['num_tables'];$z++) {
+								$temp_rows=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['table'.$z]['rows'];
+								$temp_cols=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['table'.$z]['cols'];
+								$temp_divs=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['table'.$z]['divs'];
+								$temp_thandle=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['table'.$z]['handle'];
+								$temp_tables[$x]=new Table($temp_cols,$temp_rows,$temp_divs,$temp_thandle);
+							}
+						}
+						if($temp_special_flag=="true") {
+							$temp_acc_str=new ActivationInformation($temp_id,$temp_location,$temp_ac_divs,$temp_class,$temp_hthree,$temp_div_handle);
+						}
+						else {
+							$temp_acc_str=new Accordion($temp_id,$temp_location,$temp_ac_divs,$temp_class,$temp_hthree,$temp_div_handle);
+						}
+						$div_pos="<td><div id='".$temp_location."'></div></td>";
+						$insert="<td><div id='".$temp_location."'>".$temp_acc_str."</div></td>";
+						$string=$holding_cell['table'.$i];
+						$acc_table=$this->SBAXML_obj->into_div($div_pos,$insert,$string);
+						$holding_cell['table'.$i]=$acc_table;						
 					}
 				}
 			}
@@ -253,6 +454,8 @@ class Logic {
 // A class that handles data retrieval and manipulation
 	public $username;
 	public $xml_obj;
+	public $stores_array;
+	
 	public function __construct($username) {
 		$this->username=$username;
 		$this->xml_obj=new SBAXML();
@@ -261,6 +464,28 @@ class Logic {
 	public function into_div($div_pos,$insert,$string) {
 		$new_string=str_replace($div_pos,$insert,$string);
 		return $new_string;
+	}
+	
+	public function get_stores() {
+		$temp_array=array();
+		$what='*';
+		$from='activation_information,activation_status,precheck';
+		$where='activation_information.id_info=precheck.id_precheck AND activation_information.id_info=activation_status.id_status AND activation_status.tonight="1"';
+		$order_by='activation_information.store_number';
+		$result = Database::select($what,$from,$where,$order_by);
+		foreach($result as $store){
+			$temp_array[$store['store_number']]=array(
+				'scheduled'=>$store['scheduled'],
+				'tech_working'=>$store['tech_working'],
+				'tech_assigned'=>$store['tech_assigned'],
+				'type'=>$store['type'],
+				'primary_access'=>$store['primary_access'],
+				'backup_carrier'=>$store['backup_carrier'],
+				'eon'=>$store['eon'],
+				'ops_console'=>$store['ops_console'],
+				'bridge'=>$store['bridge']);
+		}
+		return $temp_array;
 	}
 }
 
@@ -302,6 +527,28 @@ class SBAXML extends Logic{
 							$this_tab['table'.$i]['div'.$x][$key]=$pair;
 						}
 					};
+				}
+				if($key=='selectmenu' and $pair=='true') {
+					for($x=0;$x<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['num_selectmenus'];$x++) {
+						foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->select[$x]->attributes() as $key=>$pair) {
+							$this_tab['table'.$i]['select'.$x][$key]=$pair;
+						}
+					}
+				}
+				if($key=='accordion' and $pair=='true') {
+					for($x=0;$x<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['num_accordions'];$x++) {
+						foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->attributes() as $key=>$pair) {
+							$this_tab['table'.$i]['accordion'.$x][$key]=$pair;
+							for($y=0;$y<$this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]['ac_divs'];$y++) {
+								foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->ac_div[$y]->attributes() as $key=>$pair) {
+									$this_tab['table'.$i]['accordion'.$x]['ac_div'.$y][$key]=$pair;
+								}
+								foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->ac_div[$y]->table[$y]->attributes() as $key=>$pair) {
+									$this_tab['table'.$i]['accordion'.$x]['ac_div'.$y]['table'.$y][$key]=$pair;
+								}
+							}
+						}
+					}
 				}
 			}
 		}

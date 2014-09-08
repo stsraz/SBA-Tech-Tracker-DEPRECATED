@@ -27,8 +27,17 @@ function sba_precheck_scripts() {
 	wp_enqueue_script("jquery-effects-core");
 	wp_enqueue_script("jquery-effects-explode");
 	
+	// jQuery Timers
+	wp_register_style('jquery-countdown-css', get_bloginfo('stylesheet_directory') . '/sba_techtracker/JQuery_Timer/jquery.countdown.css', true);
+	wp_enqueue_style( 'jquery-countdown-css' );
+	
+	wp_register_script('jquery-countdown', get_bloginfo('stylesheet_directory') . '/sba_techtracker/JQuery_Timer/jquery.countdown.min.js', array( 'jquery-countdown-plugin' ), true);
+	wp_register_script('jquery-countdown-plugin', get_bloginfo('stylesheet_directory') . '/sba_techtracker/JQuery_Timer/jquery.plugin.min.js', array( 'jquery' ), true);
+	wp_enqueue_script("jquery-countdown");
+	
 	// Store.js
 	wp_register_script('store-js', get_bloginfo('stylesheet_directory') . '/sba_techtracker/JS/store.min.js', true);
+	wp_enqueue_script('store-js');
 	
 	// My XML
 	wp_register_script('my-xml', get_bloginfo('stylesheet_directory') . '/sba_techtracker/PHP/sba_data.xml', true);

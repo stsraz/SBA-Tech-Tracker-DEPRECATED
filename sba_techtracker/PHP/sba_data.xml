@@ -7,11 +7,13 @@
 		<pmo location="broomfield">Raul Castillo</pmo>
 	</user>
 	<sba_tab_layout>
-		<sba_tab handle="start" tables="1" bbars="0" num_divs="0">
-			<table handle="start_zero" rows="1" cols="1" divs="1" bar="false" has_div="false"></table>
+		<sba_tab handle="start" tables="1" bbars="0" num_divs="1" num_selectmenus="0" num_accordions="0">
+			<table handle="start_zero" rows="1" cols="1" divs="1" bar="false" has_div="true" selectmenu="false" accordion="false">
+				<div handle="start_zero0" data="Welcome to Tech Tracker Advanced!"></div>
+			</table>
 		</sba_tab>
-		<sba_tab handle="tracker" tables="2" bbars="2" num_divs="1">
-			<table handle="tracker_zero" rows="1" cols="2" divs="2" bar="true" has_div="false">
+		<sba_tab handle="tracker" tables="2" bbars="2" num_divs="3" num_selectmenus="0" num_accordions="1">
+			<table handle="tracker_zero" rows="1" cols="2" divs="2" bar="true" has_div="false" selectmenu="false" accordion="false">
 				<button_bar handle="tracker_bb1" location="tracker_zero0" class="ui-widget-header ui-corner-all" buttons="3">
 					<button handle="back" value="Back"></button>
 					<button handle="pause" value="Pause"></button>
@@ -22,22 +24,42 @@
 					<button handle="abort" value="Abort"></button>
 				</button_bar>
 			</table>
-			<table handle="tracker_one" rows="2" cols="1" divs="2" bar="false" has_div="true">
-				<!-- Placeholder <div handle="tracker_one0" data="jQuery will populate this div" -->
-				<div handle="tracker_one1" data="Your scheduled store information is below."></div>
+			<table handle="tracker_one" rows="2" cols="3" divs="6" bar="false" has_div="true" selectmenu="false" accordion="false">
+				<!-- jQuery Timers -->
+				<div handle="tracker_one0" data="Step Time"></div>
+				<div handle="tracker_one1" data="Time to Escalation"></div>
+				<div handle="tracker_one2" data="Total Activation Time"></div>
+			</table>
+			<table handle="tracker_two" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="true">
+				<accordion handle="activation_information" special="true" location="tracker_two0" ac_divs="5">
+					<ac_div class="group" hthree="Activation Information" div_handle="act_info" num_tables="2"></ac_div>
+						<table handle="acc_one" rows="1" cols="3" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
+						<table handle="acc_two" rows="2" cols="4" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
+					<ac_div class="group" hthree="Store Information" div_handle="store_info" num_tables="1"></ac_div>
+						<table handle="acc_two" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
+					<ac_div class="group" hthree="IP Information" div_handle="ip_info" num_tables="1"></ac_div>
+						<table handle="acc_three" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
+					<ac_div class="group" hthree="Precheck Information" div_handle="precheck_info" num_tables="1"></ac_div>
+						<table handle="acc_four" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
+					<ac_div class="group" hthree="Field Tech Information" div_handle="ft_info" num_tables="1"></ac_div>
+						<table handle="acc_five" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
+				</accordion>
+			</table>
+			<table handle="tracker_three" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="true" accordion="false">
+				<select handle="store_select" location="tracker_three0" label_value="Not the store you were looking for?"></select>
 			</table>
 		</sba_tab>
-		<sba_tab handle="precheck" tables="2" bbars="0" num_divs="0">
-			<table handle="precheck_zero" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
-			<table handle="precheck_one" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
+		<sba_tab handle="precheck" tables="2" bbars="0" num_divs="0" num_selectmenus="0" num_accordions="0">
+			<table handle="precheck_zero" rows="1" cols="2" divs="2" bar="false" has_div="false" accordion="false"></table>
+			<table handle="precheck_one" rows="1" cols="2" divs="2" bar="false" has_div="false" accordion="false"></table>
 		</sba_tab>
-		<sba_tab handle="view" tables="2" bbars="0" num_divs="0">
-			<table handle="view_zero" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
-			<table handle="view_one" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
+		<sba_tab handle="view" tables="2" bbars="0" num_divs="0" num_selectmenus="0" num_accordions="0">
+			<table handle="view_zero" rows="1" cols="2" divs="2" bar="false" has_div="false" accordion="false"></table>
+			<table handle="view_one" rows="1" cols="2" divs="2" bar="false" has_div="false" accordion="false"></table>
 		</sba_tab>
-		<sba_tab handle="summary" tables="2" bbars="0" num_divs="0">
-			<table handle="summary_zero" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
-			<table handle="summary_one" rows="1" cols="2" divs="2" bar="false" has_div="false"></table>
+		<sba_tab handle="summary" tables="2" bbars="0" num_divs="0" num_selectmenus="0" num_accordions="0">
+			<table handle="summary_zero" rows="1" cols="2" divs="2" bar="false" has_div="false" accordion="false"></table>
+			<table handle="summary_one" rows="1" cols="2" divs="2" bar="false" has_div="false" accordion="false"></table>
 		</sba_tab>		
 	</sba_tab_layout>
 </sba_data>
