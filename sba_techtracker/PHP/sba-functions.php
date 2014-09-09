@@ -379,30 +379,28 @@ class Tabs extends Presenter {
 				}
 			}
 			// If there are select menus, add them to the holding cell in the right spot
-			if($this->tab_prop['num_selectmenus']!='0') {
-				for($y=0;$y<$this->tab_prop['num_selectmenus'];$y++) {
-					if($this->tab_prop['table'.$i]['selectmenu'=='true']) {
-						$temp_id=$this->tab_prop['table'.$i]['select'.$y]['handle'];
-						$temp_label_value=$this->tab_prop['table'.$i]['select'.$y]['label_value'];
-						$temp_location=$this->tab_prop['table'.$i]['select'.$y]['location'];
-						$temp_obj=new Store($temp_label_value,$temp_id);
+			//if($this->tab_prop['num_selectmenus']!='0') {
+				//for($y=0;$y<$this->tab_prop['num_selectmenus'];$y++) {
+					//if($this->tab_prop['table'.$i]['selectmenu'=='true']) {
+						//$temp_id=$this->tab_prop['table'.$i]['select'.$y]['handle'];
+						//$temp_label_value=$this->tab_prop['table'.$i]['select'.$y]['label_value'];
+						//$temp_location=$this->tab_prop['table'.$i]['select'.$y]['location'];
+						//$temp_obj=new Store($temp_label_value,$temp_id);
 						
-						$store_select=$temp_obj->build_select_menu();
-						$div_pos="<td><div id='".$temp_location."'></div></td>";
-						$insert="<td><div id='".$temp_location."'>".$store_select."</div></td>";
-						$string=$holding_cell['table'.$i];
-						$select_table=$this->SBAXML_obj->into_div($div_pos,$insert,$string);
-						$holding_cell['table'.$i]=$select_table;
-					}
-				}
-			}
+						//$store_select=$temp_obj->build_select_menu();
+						//$div_pos="<td><div id='".$temp_location."'></div></td>";
+						//$insert="<td><div id='".$temp_location."'>".$store_select."</div></td>";
+						//$string=$holding_cell['table'.$i];
+						//$select_table=$this->SBAXML_obj->into_div($div_pos,$insert,$string);
+						//$holding_cell['table'.$i]=$select_table;
+					//}
+				//}
+			//}
 			// If there are accordions, add them to the holding cell in the right spot
 			if($this->tab_prop['num_accordions']!='0') {
 				for($y=0;$y<$this->tab_prop['num_accordions'];$y++) {
-					print("test".$y);
-					if($this->tab_prop['table'.$i]['accordion'=='true']) {
+					if($this->tab_prop['table'.$i]['accordion']=='true') {
 						$temp_id=$this->tab_prop['table'.$i]['accordion'.$y]['handle'];
-						$temp_special_flag=$this->tab_prop['table'.$i]['accordion'.$y]['special'];
 						$temp_location=$this->tab_prop['table'.$i]['accordion'.$y]['location'];
 						$temp_ac_divs=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'];
 						$temp_class=array();
@@ -411,18 +409,18 @@ class Tabs extends Presenter {
 						$temp_tables=array();
 						$temp_acc_str;
 						for($x=0;$x<$temp_ac_divs;$x++) {
-							$temp_class[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['class'];
-							$temp_hthree[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['hthree'];
-							$temp_div_handle[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['div_handle'];
-							for($z=0;$z<$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['num_tables'];$z++) {
-								$temp_rows=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['table'.$z]['rows'];
-								$temp_cols=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['table'.$z]['cols'];
-								$temp_divs=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['table'.$z]['divs'];
-								$temp_thandle=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'.$x]['table'.$z]['handle'];
-								$temp_tables[$x]=new Table($temp_cols,$temp_rows,$temp_divs,$temp_thandle);
+							$temp_class[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['class'];
+							$temp_hthree[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['hthree'];
+							$temp_div_handle[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['div_handle'];
+							for($z=0;$z<$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['num_tables'];$z++) {
+								$temp_rows=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['table'.$z]['rows'];
+								$temp_cols=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['table'.$z]['cols'];
+								$temp_divs=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['table'.$z]['divs'];
+								$temp_thandle=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['table'.$z]['handle'];
+								$temp_tables[$z]=new Table($temp_cols,$temp_rows,$temp_divs,$temp_thandle);
 							}
 						}
-						if($temp_special_flag=="true") {
+						if($temp_id=="activation_information") {
 							$temp_acc_str=new ActivationInformation($temp_id,$temp_location,$temp_ac_divs,$temp_class,$temp_hthree,$temp_div_handle);
 						}
 						else {
@@ -454,7 +452,6 @@ class Logic {
 // A class that handles data retrieval and manipulation
 	public $username;
 	public $xml_obj;
-	public $stores_array;
 	
 	public function __construct($username) {
 		$this->username=$username;
@@ -528,13 +525,13 @@ class SBAXML extends Logic{
 						}
 					};
 				}
-				if($key=='selectmenu' and $pair=='true') {
-					for($x=0;$x<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['num_selectmenus'];$x++) {
-						foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->select[$x]->attributes() as $key=>$pair) {
-							$this_tab['table'.$i]['select'.$x][$key]=$pair;
-						}
-					}
-				}
+				//if($key=='selectmenu' and $pair=='true') {
+					//for($x=0;$x<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['num_selectmenus'];$x++) {
+						//foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->select[$x]->attributes() as $key=>$pair) {
+							//$this_tab['table'.$i]['select'.$x][$key]=$pair;
+						//}
+					//}
+				//}
 				if($key=='accordion' and $pair=='true') {
 					for($x=0;$x<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['num_accordions'];$x++) {
 						foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->attributes() as $key=>$pair) {
@@ -543,8 +540,10 @@ class SBAXML extends Logic{
 								foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->ac_div[$y]->attributes() as $key=>$pair) {
 									$this_tab['table'.$i]['accordion'.$x]['ac_div'.$y][$key]=$pair;
 								}
-								foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->ac_div[$y]->table[$y]->attributes() as $key=>$pair) {
-									$this_tab['table'.$i]['accordion'.$x]['ac_div'.$y]['table'.$y][$key]=$pair;
+								for($z=0;$z<$this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->ac_div[$y]['num_tables'];$z++) {
+									foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->ac_div[$y]->table[$z]->attributes() as $key=>$pair) {
+										$this_tab['table'.$i]['accordion'.$x]['ac_div'.$y]['table'.$z][$key]=$pair;
+									}
 								}
 							}
 						}

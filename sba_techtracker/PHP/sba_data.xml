@@ -12,7 +12,7 @@
 				<div handle="start_zero0" data="Welcome to Tech Tracker Advanced!"></div>
 			</table>
 		</sba_tab>
-		<sba_tab handle="tracker" tables="2" bbars="2" num_divs="3" num_selectmenus="0" num_accordions="1">
+		<sba_tab handle="tracker" tables="3" bbars="2" num_divs="3" num_selectmenus="0" num_accordions="1">
 			<table handle="tracker_zero" rows="1" cols="2" divs="2" bar="true" has_div="false" selectmenu="false" accordion="false">
 				<button_bar handle="tracker_bb1" location="tracker_zero0" class="ui-widget-header ui-corner-all" buttons="3">
 					<button handle="back" value="Back"></button>
@@ -31,18 +31,23 @@
 				<div handle="tracker_one2" data="Total Activation Time"></div>
 			</table>
 			<table handle="tracker_two" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="true">
-				<accordion handle="activation_information" special="true" location="tracker_two0" ac_divs="5">
-					<ac_div class="group" hthree="Activation Information" div_handle="act_info" num_tables="2"></ac_div>
-						<table handle="acc_one" rows="1" cols="3" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
-						<table handle="acc_two" rows="2" cols="4" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
-					<ac_div class="group" hthree="Store Information" div_handle="store_info" num_tables="1"></ac_div>
+				<accordion handle="activation_information" location="tracker_two0" ac_divs="5">
+					<ac_div class="group" hthree="Activation Information" div_handle="act_info" num_tables="2">
+						<table handle="acc_zero" rows="1" cols="3" divs="3" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
+						<table handle="acc_one" rows="2" cols="4" divs="8" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
+					</ac_div>
+					<ac_div class="group" hthree="Store Information" div_handle="store_info" num_tables="1">
 						<table handle="acc_two" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
-					<ac_div class="group" hthree="IP Information" div_handle="ip_info" num_tables="1"></ac_div>
+					</ac_div>
+					<ac_div class="group" hthree="IP Information" div_handle="ip_info" num_tables="1">
 						<table handle="acc_three" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
-					<ac_div class="group" hthree="Precheck Information" div_handle="precheck_info" num_tables="1"></ac_div>
+					</ac_div>
+					<ac_div class="group" hthree="Precheck Information" div_handle="precheck_info" num_tables="1">
 						<table handle="acc_four" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
-					<ac_div class="group" hthree="Field Tech Information" div_handle="ft_info" num_tables="1"></ac_div>
+					</ac_div>
+					<ac_div class="group" hthree="Field Tech Information" div_handle="ft_info" num_tables="1">
 						<table handle="acc_five" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="false" accordion="false"></table>
+					</ac_div>
 				</accordion>
 			</table>
 			<table handle="tracker_three" rows="1" cols="1" divs="1" bar="false" has_div="false" selectmenu="true" accordion="false">
