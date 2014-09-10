@@ -46,6 +46,7 @@ function do_action(type,response) {
 			jQuery('#tracker_one3').countdown({since: 0, format: "HMS", compact: true});
 			jQuery('#tracker_one4').countdown({until: '+15m', format:"MS", compact: true});
 			jQuery('#tracker_one5').countdown({since: 0, format:"HM", compact: true});
+			jQuery('#activation_information').accordion();
 			break;
 	}
 }

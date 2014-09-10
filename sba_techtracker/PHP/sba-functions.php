@@ -237,11 +237,11 @@ class Accordion extends Presenter {
 		$this->set_id($id);
 		$this->set_location($location);
 		$this->set_num_divs($num_divs);
-		
 		$this->acc_string=$this->build_accordion();
+	}
+	public function get_acc_string() {
 		return $this->acc_string;
 	}
-	
 	public function set_id($id) {
 		$this->id=$id;
 	}
@@ -265,8 +265,9 @@ class Accordion extends Presenter {
 		$accordion_construct='';
 		$accordion_construct=$accordion_construct.'<div id="'.$this->id.'">';
 		for($i=0;$i<$this->num_divs;$i++) {
-			$accordion_construct=$accordion_construct.'<div class="'.$this->class_array[$i].'"><h3>'.$this->hthree_array[$i].'</h3><div id="'.$this->div_handle_array[$i].'"></div></div></div>';
+			$accordion_construct=$accordion_construct.'<h3>'.$this->hthree_array[$i].'</h3><div class="'.$this->class_array[$i].'" id="'.$this->div_handle_array[$i].'"></div>';
 		}
+		$accordion_construct=$accordion_construct.'</div>';
 		return $accordion_construct;
 	}
 }
@@ -274,17 +275,18 @@ class Accordion extends Presenter {
 class ActivationInformation extends Accordion {
 	public $stores_array=array();
 	public $user_store=array();
-	public $temp_acc;
+	public $temp_str;
 	public $temp_tables;
 	
 	public function __construct($id,$location,$num_divs,$class_array,$hthree_array,$div_handle_array) {
-		$this->stores_array=$this->my_logic->get_stores();
+		//$this->stores_array=$this->my_logic->get_stores();
 		$this->get_user_store();
-		$this->temp_acc=parent::__construct($id,$location,$num_divs,$class_array,$hthree_array,$div_handle_array);
-		$this->populate_acc_data();
-		return $this->temp_acc;
+		parent::__construct($id,$location,$num_divs,$class_array,$hthree_array,$div_handle_array);
+		$this->temp_str=$this->get_acc_string();
 	}
-	
+	public function get_acc_info_string() {
+		return $this->temp_str;
+	}
 	public function get_user_store() {
 		for($i=0;$i<count($this->stores_array);$i++) {
 			if($this->stores_array[$i]['tech_assigned']==$this->my_logic->username) {
@@ -302,10 +304,6 @@ class ActivationInformation extends Accordion {
 				$this->user_store=$temp_array;
 			}
 		}
-	}
-	
-	public function populate_acc_data() {
-		
 	}
 }
 
@@ -421,10 +419,12 @@ class Tabs extends Presenter {
 							}
 						}
 						if($temp_id=="activation_information") {
-							$temp_acc_str=new ActivationInformation($temp_id,$temp_location,$temp_ac_divs,$temp_class,$temp_hthree,$temp_div_handle);
+							$temp_acc_obj=new ActivationInformation($temp_id,$temp_location,$temp_ac_divs,$temp_class,$temp_hthree,$temp_div_handle);
+							$temp_acc_str=$temp_acc_obj->get_acc_info_string();
 						}
 						else {
-							$temp_acc_str=new Accordion($temp_id,$temp_location,$temp_ac_divs,$temp_class,$temp_hthree,$temp_div_handle);
+							$temp_acc_obj=new Accordion($temp_id,$temp_location,$temp_ac_divs,$temp_class,$temp_hthree,$temp_div_handle);
+							$temp_acc_str=$temp_acc_obj->get_acc_string();
 						}
 						$div_pos="<td><div id='".$temp_location."'></div></td>";
 						$insert="<td><div id='".$temp_location."'>".$temp_acc_str."</div></td>";
@@ -473,7 +473,6 @@ class Logic {
 		foreach($result as $store){
 			$temp_array[$store['store_number']]=array(
 				'scheduled'=>$store['scheduled'],
-				'tech_working'=>$store['tech_working'],
 				'tech_assigned'=>$store['tech_assigned'],
 				'type'=>$store['type'],
 				'primary_access'=>$store['primary_access'],

@@ -21,6 +21,7 @@ function sba_precheck_scripts() {
 	wp_enqueue_script("jquery-ui-widget");
 	wp_enqueue_script("jquery-ui-tabs");
 	wp_enqueue_script("jquery-ui-button");
+	wp_enqueue_script("jquery-ui-accordion");
 	wp_enqueue_script("jquery-ui-progressbar");
 	wp_enqueue_script("jquery-ui-datepicker");
 	wp_enqueue_script("jquery-ui-dialog");
