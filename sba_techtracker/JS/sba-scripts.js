@@ -3,27 +3,77 @@
  */
 
 jQuery(document).ready(function() {
+	post_call("populate_my_dom");
+
+});
+
+function post_call(type) {
 	var data = {
 		action: 'sba_callback',
 		security: MyAjax.security,
-		type: 'populate'
+		type: type
 	};
 	jQuery.post(MyAjax.ajaxurl,data,function(response) {
-		jQuery("#content").html(response);
-		jQuery("#tabs").tabs();
-		
-		jQuery("#start_0").html("<p>Start Page Content</p>");
-		jQuery("#tracker_0").html("<p>Tracker Content</p>");
-		jQuery("#precheck_0").html("<p>Precheck Content</p>");
-		jQuery("#view_0").html("<p>View Activation Content</p>");
-		jQuery("#summary_0").html("<p>Activation Summary Content</p>");
-		
-		jQuery("#start_15").html("<p>Start Page Content</p>");
-		jQuery("#tracker_15").html("<p>Tracker Content</p>");
-		jQuery("#precheck_15").html("<p>Precheck Content</p>");
-		jQuery("#view_15").html("<p>View Activation Content</p>");
-		jQuery("#summary_15").html("<p>Activation Summary Content</p>");
+		do_action(type,response);
+	});
+}
 
+function do_action(type,response) {
+	switch(type) {
+		case 'populate_my_dom':
+			jQuery("#my_content").append_element({response:response});
+			jQuery("#tabs").tabs();
+			jQuery(function() {
+				jQuery("#back").button({
+					text: true
+				});
+				jQuery("#pause").button({
+					text: true
+				});
+				jQuery("#next").button({
+					text: true
+				});
+				jQuery("#help").button({
+					text: true
+				});
+				jQuery("#abort").button({
+					text: true
+				});
+				jQuery("#tracker_bb1").buttonset();
+				jQuery("#tracker_bb2").buttonset();
+			});
+			//jQuery(".my_buttonbar").hide();
+			jQuery('#tracker_one3').countdown({since: 0, format: "HMS", compact: true});
+			jQuery('#tracker_one4').countdown({until: '+15m', format:"MS", compact: true});
+			jQuery('#tracker_one5').countdown({since: 0, format:"HM", compact: true});
+			jQuery('#activation_information').accordion();
+			break;
+	}
+}
+
+jQuery(function() {
+	// A widget to populate an element
+	jQuery.widget("sba.append_element", {
+		// Default options
+		options: {
+			response: null
+		},
+		
+		_create: function() {
+			this.element
+				.append(this.options.response);
+		}
+	});
+	// A widget to populate divs with jQuery timers
+	jQuery.widget("sba.insert_timer", {
+		// Default options
+		options: {
+			until: null,
+			since: null
+		},
+		
+		_create: function() {
+			
+		}
 	});
 });
-
