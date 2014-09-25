@@ -61,7 +61,7 @@
 				</accordion>
 			</table>
 			<table id="tracker_four" rows="1" cols="1" divs="1" num_select_menus="1">
-				<select id="store_select" location="tracker_four0" label_value="Not the store you were looking for?"></select>
+				<select id="store_select" location="tracker_three0" label_value="Not the store you were looking for?"></select>
 			</table>
 		</sba_tab>
 		<sba_tab id="precheck" num_tables="2">

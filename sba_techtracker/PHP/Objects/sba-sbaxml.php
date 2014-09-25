@@ -30,7 +30,7 @@ class SBAXML extends Logic{
 			$button_bar_properties[$key]=$pair;
 		}
 		for($i=0;$i<$button_bar_properties['num_buttons'];$i++) {
-			foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->button_bar[$button_bar_num]->button->attributes() as $key=>$pair) {
+			foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->button_bar[$button_bar_num]->button[$i]->attributes() as $key=>$pair) {
 				if($key=="id") {
 					$temp_ids[$i][$key]=$pair;
 				}
@@ -42,6 +42,23 @@ class SBAXML extends Logic{
 		$button_bar_properties['button_ids']=$temp_ids;
 		$button_bar_properties['button_values']=$temp_values;
 		return $button_bar_properties;
+	}
+	public function get_accordion_properties($rti,$table_num,$accordion_num) {
+		$accordion_properties=array();	// An array that will hold the requested accordions's properties
+		foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->attributes() as $key=>$pair) {
+			$accordion_properties[$key]=$pair;
+		}
+		for($i=0;$i<$accordion_properties['num_accordion_divs'];$i++) {
+			foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->accordion_div[$i]->attributes() as $key=>$pair) {
+				$accordion_properties['accordion_div'.$i][$key]=$pair;
+			}
+			for($j=0;$j<$accordion_properties['accordion_div'.$i]['num_tables'];$j++) {
+				foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->accordion_div[$i]->table[$j]->attributes() as $key=>$pair) {
+					$accordion_properties['accordion_div'.$i]['table'.$j][$key]=$pair;
+				}
+			}
+		}
+		return $accordion_properties;
 	}
 	public function get_table_div_properties($rti,$table_num,$table_div_num) {
 		$table_div_properties=array();	// An array that will hold the requested button bar's properties

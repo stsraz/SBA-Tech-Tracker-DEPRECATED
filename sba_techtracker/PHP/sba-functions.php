@@ -1,13 +1,4 @@
 <?php
-
-include_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-tab.php';
-include_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-accordion.php';
-include_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-button-bar.php';
-include_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-select-menu.php';
-include_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-table.php';
-include_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-database.php';
-include_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-sbaxml.php';
-
 function sba_callback() {
 //A callback function for responding to Javascript Ajax calls
 
@@ -41,16 +32,16 @@ class Router {
 
 class Presenter {
 // A class that displays data on the page and hold the methods for the Router object.
+	// Properties
 	public $logic_object;
 	public $sbaxml_object;
 	public $my_interface='<div id="tabs"><ul><li><a href="#start"><span>Start Page</span></a></li><li><a href="#tracker"><span>Tech Tracker</span></a></li><li><a href="#precheck"><span>Precheck</span></a></li><li><a href="#view"><span>View Activation</span></a></li><li><a href="#summary"><span>Activation Summary</span></a></li></ul><div id="start"></div><div id="tracker"></div><div id="precheck"></div><div id="view"></div><div id="summary"></div></div>';
 	public $tab_divs=array('start','tracker','precheck','view','summary');
-	
+	//Methods
 	public function __construct(Logic $logic) {
 		$this->logic_object=$logic;
 		$this->sbaxml_object=new SBAXML();
 	}
-	
 	public function populate_my_dom() {
 		// Create the tabs, populate them, and insert them into the dom
 		for($i=0;$i<count($this->tab_divs);$i++) {
@@ -65,6 +56,11 @@ class Presenter {
 		return $this->my_interface;
 	}
 }
+require_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-tab.php';
+require_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-accordion.php';
+require_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-button-bar.php';
+require_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-select-menu.php';
+require_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-table.php';
 
 class Logic {
 // A class that handles data retrieval and manipulation
@@ -78,5 +74,6 @@ class Logic {
 		return $new_string;
 	}
 }
-
+require_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-database.php';
+require_once get_stylesheet_directory() . '/sba_techtracker/PHP/Objects/sba-sbaxml.php';
 ?>

@@ -43,9 +43,9 @@ function do_action(type,response) {
 				jQuery("#tracker_bb2").buttonset();
 			});
 			//jQuery(".my_buttonbar").hide();
-			jQuery('#tracker_one3').countdown({since: 0, format: "HMS", compact: true});
-			jQuery('#tracker_one4').countdown({until: '+15m', format:"MS", compact: true});
-			jQuery('#tracker_one5').countdown({since: 0, format:"HM", compact: true});
+			jQuery('#tracker_two3').countdown({since: 0, format: "HMS", compact: true});
+			jQuery('#tracker_two4').countdown({until: '+15m', format:"MS", compact: true});
+			jQuery('#tracker_two5').countdown({since: 0, format:"HM", compact: true});
 			jQuery('#activation_information').accordion();
 			break;
 	}

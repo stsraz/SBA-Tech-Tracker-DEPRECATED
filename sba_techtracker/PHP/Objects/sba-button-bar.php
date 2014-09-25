@@ -1,6 +1,6 @@
 <?php
 	class ButtonBar extends Presenter {
-	// A class that makes custom table objects
+	// A class that makes custom button bar objects
 		public $bar_id;
 		public $bar_location;
 		public $bar_css_class;

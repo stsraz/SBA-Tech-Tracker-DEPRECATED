@@ -1,14 +1,19 @@
 <?php
 	class Tabs extends Presenter {
+		// Properties
 		public $tab_string;
 		public $tab_id;
 		public $num_tables;
-		
+		public $logic_object;
+		public $sbaxml_object;
+		//Methods
 		public function __construct($rti) {
+			$this->sbaxml_object=new SBAXML;
+			$this->logic_object=new Logic(wp_get_current_user()->user_login);
 			$this->get_tab_properties($rti);
 			$this->tab_string="<div id='" . $this->tab_id . "'>";
 			$this->add_tables($rti);
-			//$this->add_accordions($rti);
+			$this->add_accordions($rti);
 			$this->add_bbars($rti);
 			$this->add_table_divs($rti);
 			//$this->add_select_menus($rti);
@@ -34,7 +39,42 @@
 			$this->tab_string .= $tables_string;
 		}
 		public function add_accordions($rti) {
-			
+			for($i=0;$i<$this->num_tables;$i++) {
+				$table_properties=$this->sbaxml_object->get_table_properties($rti,$i);
+				if(isset($table_properties['num_accordions'])) {
+					for($j=0;$j<$table_properties['num_accordions'];$j++) {
+						$accordion_properties=$this->sbaxml_object->get_accordion_properties($rti,$i,$j);
+						$id=$accordion_properties['id'];
+						$location=$accordion_properties['location'];
+						$num_divs=$accordion_properties['num_accordion_divs'];
+						$class_array=array();
+						$hthree_array=array();
+						$div_id_array=array();
+						$table_array=array();
+						for($k=0;$k<$accordion_properties['num_accordion_divs'];$k++) {
+							$class_array[$k]=$accordion_properties['accordion_div'.$k]['class'];
+							$hthree_array[$k]=$accordion_properties['accordion_div'.$k]['hthree'];
+							$div_id_array[$k]=$accordion_properties['accordion_div'.$k]['div_id'];
+							for($l=0;$l<$accordion_properties['accordion_div'.$k]['num_tables'];$l++) {
+								$at_div_id=$accordion_properties['accordion_div'.$k]['table'.$l]['id'];
+								$cols=$accordion_properties['accordion_div'.$k]['table'.$l]['cols'];
+								$rows=$accordion_properties['accordion_div'.$k]['table'.$l]['rows'];
+								$divs=$accordion_properties['accordion_div'.$k]['table'.$l]['divs'];
+								$temp_table=new Table($at_div_id,$cols,$rows,$divs);
+								$temp_table_string=$temp_table->get_table_string();
+								$table_array[$k] .= $temp_table_string;
+							}
+						}
+						$temp_accordion_object=new Accordion($id,$location,$num_divs,$class_array,$hthree_array,$div_id_array,$table_array);
+						$temp_accordion_string=$temp_accordion_object->get_accordion_string();
+						$div_pos="<div id='" . $accordion_properties['location'] . "'></div>";
+						$insert="<div id='" . $accordion_properties['location'] . "'>" . $temp_accordion_string . "</div>";
+						$string=$this->tab_string;
+						$accordion_to_tab_string=$this->logic_object->into_div($div_pos,$insert,$string);
+						$this->tab_string=$accordion_to_tab_string;
+					}
+				}
+			}
 		}
 		public function add_bbars($rti) {
 			for($i=0;$i<$this->num_tables;$i++) {
