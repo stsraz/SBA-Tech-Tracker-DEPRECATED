@@ -56,16 +56,49 @@ class SBAXML extends Logic{
 				foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->accordion_div[$i]->table[$j]->attributes() as $key=>$pair) {
 					$accordion_properties['accordion_div'.$i]['table'.$j][$key]=$pair;
 				}
+				for($k=0;$k<count($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->accordion_div[$i]->table[$j]->table_div);$k++) {
+					foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->accordion_div[$i]->table[$j]->table_div[$k]->attributes() as $key=>$pair) {
+						$accordion_properties['accordion_div'.$i]['table'.$j]['table_div'.$k][$key]=$pair;
+					}
+				}
 			}
 		}
 		return $accordion_properties;
 	}
 	public function get_table_div_properties($rti,$table_num,$table_div_num) {
-		$table_div_properties=array();	// An array that will hold the requested button bar's properties
+		$table_div_properties=array();	// An array that will hold the requested table div's properties
 		foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->table_div[$table_div_num]->attributes() as $key=>$pair) {
 			$table_div_properties[$key]=$pair;
 		}
 		return $table_div_properties;
+	}
+	public function get_accordion_table_div_properties($rti,$table_num,$accordion_num) {
+		$accordion_table_div_properties=array(); // An array that will hold the requested accordion table div's properties
+		foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->attributes() as $key=>$pair) {
+			if($key=='num_accordion_divs') {
+				$accordion_table_div_properties[$key]=$pair;
+			}
+		}
+		for($i=0;$i<$accordion_table_div_properties['num_accordion_divs'];$i++) {
+			foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->accordion_div[$i]->attributes() as $key=>$pair) {
+				if($key=='num_tables') {
+					$accordion_table_div_properties['accordion_div'.$i][$key]=$pair;
+				}
+			}
+			for($j=0;$j<$accordion_table_div_properties['accordion_div'.$i]['num_tables'];$j++) {
+				foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->accordion_div[$i]->table[$j]->attributes() as $key=>$pair) {
+					if($key=='num_table_divs') {
+						$accordion_table_div_properties['accordion_div'.$i]['table'.$j][$key]=$pair;
+					}
+				}
+				for($k=0;$k<$accordion_table_div_properties['accordion_div'.$i]['table'.$j]['num_table_divs'];$k++) {
+					foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->accordion_div[$i]->table[$j]->table_div[$k]->attributes() as $key=>$pair) {
+						$accordion_table_div_properties['accordion_div'.$i]['table'.$j]['table_div'.$k][$key]=$pair;
+					}
+				}
+			}
+		}
+		return $accordion_table_div_properties;
 	}
 }
 	

@@ -55,6 +55,7 @@
 							$class_array[$k]=$accordion_properties['accordion_div'.$k]['class'];
 							$hthree_array[$k]=$accordion_properties['accordion_div'.$k]['hthree'];
 							$div_id_array[$k]=$accordion_properties['accordion_div'.$k]['div_id'];
+							$table_array[$k]='';
 							for($l=0;$l<$accordion_properties['accordion_div'.$k]['num_tables'];$l++) {
 								$at_div_id=$accordion_properties['accordion_div'.$k]['table'.$l]['id'];
 								$cols=$accordion_properties['accordion_div'.$k]['table'.$l]['cols'];
@@ -112,6 +113,24 @@
 						$string=$this->tab_string;
 						$table_div_to_tab_string=$this->logic_object->into_div($div_pos,$insert,$string);
 						$this->tab_string=$table_div_to_tab_string;
+					}
+				}
+				if(isset($table_properties['num_accordions'])) {
+					for($j=0;$j<$table_properties['num_accordions'];$j++) {
+						$accordion_table_div_properties=$this->sbaxml_object->get_accordion_table_div_properties($rti,$i,$j);
+						for($k=0;$k<$accordion_table_div_properties['num_accordion_divs'];$k++) {
+							for($l=0;$l<$accordion_table_div_properties['accordion_div'.$k]['num_tables'];$l++) {
+								for($m=0;$m<$accordion_table_div_properties['accordion_div'.$k]['table'.$l]['num_table_divs'];$m++) {
+									$location=$accordion_table_div_properties['accordion_div'.$k]['table'.$l]['table_div'.$m]['location'];
+									$data=$accordion_table_div_properties['accordion_div'.$k]['table'.$l]['table_div'.$m]['data'];
+									$div_pos="<div id='" . $location . "'></div>";
+									$insert="<div id='" . $location . "'>" . $data . "</div>";
+									$string=$this->tab_string;
+									$accordion_div_to_tab_string=$this->logic_object->into_div($div_pos,$insert,$string);
+									$this->tab_string=$accordion_div_to_tab_string;
+								}
+							}
+						}
 					}
 				}
 			}

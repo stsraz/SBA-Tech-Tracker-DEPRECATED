@@ -42,21 +42,36 @@
 			</table>
 			<table id="tracker_three" rows="1" cols="1" divs="1" num_accordions="1">
 				<accordion id="activation_information" location="tracker_three0" num_accordion_divs="5">
-					<accordion_div class="group" hthree="Activation Information" div_id="act_info" num_tables="2">
-						<table id="acc_zero" rows="1" cols="3" divs="3"></table>
-						<table id="acc_one" rows="2" cols="4" divs="8"></table>
+					<accordion_div class="group" hthree="Activation Information" div_id="act_info" num_tables="3">
+						<table id="acc_zero" rows="2" cols="3" divs="6" num_table_divs="3">
+                                                        <table_div location="acc_zero0" data="Store Number"></table_div>
+                                                        <table_div location="acc_zero1" data="Scheduled Activation Time"></table_div>
+                                                        <table_div location="acc_zero2" data="Activation Type"></table_div>
+                                                </table>
+                                                <table id="acc_one" rows="2" cols="4" divs="8" num_table_divs="4">
+                                                        <table_div location="acc_one0" data="Eon Number"></table_div>
+                                                        <table_div location="acc_one1" data="Ops Console"></table_div>
+                                                        <table_div location="acc_one2" data="Bridge Access Code"></table_div>
+                                                        <table_div location="acc_one3" data="Bridge Pin"></table_div>
+                                                </table>
+						<table id="acc_two" rows="2" cols="4" divs="8" num_table_divs="4">
+                                                        <table_div location="acc_two0" data="Assigned SA Tech"></table_div>
+                                                        <table_div location="acc_two1" data="Primary Access"></table_div>
+                                                        <table_div location="acc_two2" data="Backup Carrier"></table_div>
+                                                        <table_div location="acc_two3" data="Revisit"></table_div>
+                                                </table>
 					</accordion_div>
 					<accordion_div class="group" hthree="Store Information" div_id="store_info" num_tables="1">
-						<table id="acc_two" rows="1" cols="1" divs="1"></table>
+						<table id="acc_three" rows="1" cols="1" divs="1" num_table_divs="0"></table>
 					</accordion_div>
 					<accordion_div class="group" hthree="IP Information" div_id="ip_info" num_tables="1">
-						<table id="acc_three" rows="1" cols="1" divs="1"></table>
+						<table id="acc_four" rows="1" cols="1" divs="1" num_table_divs="0"></table>
 					</accordion_div>
 					<accordion_div class="group" hthree="Precheck Information" div_id="precheck_info" num_tables="1">
-						<table id="acc_four" rows="1" cols="1" divs="1"></table>
+						<table id="acc_five" rows="1" cols="1" divs="1" num_table_divs="0"></table>
 					</accordion_div>
 					<accordion_div class="group" hthree="Field Tech Information" div_id="ft_info" num_tables="1">
-						<table id="acc_five" rows="1" cols="1" divs="1"></table>
+						<table id="acc_six" rows="1" cols="1" divs="1" num_table_divs="0"></table>
 					</accordion_div>
 				</accordion>
 			</table>
