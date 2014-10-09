@@ -6,6 +6,10 @@
 		<lead location="broomfield">Brendan Leslie</lead>
 		<pmo location="broomfield">Raul Castillo</pmo>
 	</user>
+        <bridge>
+                <pin code="1234567" pin="1234"></pin>
+                <pin code="7651248" pin="4321"></pin>
+        </bridge>
         <activation_steps>
                 <migration>
                         <act_step id="1" data="This is step one." link="http://this.is.a.test.com"></act_step>
@@ -19,14 +23,19 @@
 				<table_div location="start_zero0" data="Welcome to Tech Tracker Advanced!"></table_div>
 			</table>
 		</sba_tab>
-		<sba_tab id="tracker" num_tables="4">
+		<sba_tab id="tracker" num_tables="6">
+                        <table id="start_button" rows="1" cols="1" divs="1" num_button_bars="1">
+                                <button_bar id="start_bar"  location="start_button0" class="my_buttonbar ui-widget-header ui-corner-all" num_buttons="1">
+                                        <button id="start_button" value="Start"></button>
+                                </button_bar>
+                        </table>
 			<table id="tracker_zero" rows="1" cols="2" divs="2" num_button_bars="2">
-				<button_bar id="tracker_bb1" location="tracker_zero0" class="ui-widget-header ui-corner-all" num_buttons="3">
+				<button_bar id="tracker_bb1" location="tracker_zero0" class="my_buttonbar ui-widget-header ui-corner-all" num_buttons="3">
 					<button id="back" value="Back"></button>
 					<button id="pause" value="Pause"></button>
 					<button id="next" value="Next"></button>
 				</button_bar>
-				<button_bar id="tracker_bb2" location="tracker_zero1" class="ui-widget-header ui-corner-all" num_buttons="2">
+				<button_bar id="tracker_bb2" location="tracker_zero1" class="my_buttonbar ui-widget-header ui-corner-all" num_buttons="2">
 					<button id="help" value="Help"></button>
 					<button id="abort" value="Abort"></button>
 				</button_bar>
@@ -62,21 +71,35 @@
                                                 </table>
 					</accordion_div>
 					<accordion_div class="group" hthree="Store Information" div_id="store_info" num_tables="1">
-						<table id="acc_three" rows="1" cols="1" divs="1" num_table_divs="0"></table>
+						<table id="acc_three" rows="3" cols="2" divs="6" num_table_divs="3">
+                                                        <table_div location="acc_three0" data="Phone Number"></table_div>
+                                                        <table_div location="acc_three2" data="Address"></table_div>
+                                                        <table_div location="acc_three4" data="City, State Zip"></table_div>
+                                                </table>
 					</accordion_div>
 					<accordion_div class="group" hthree="IP Information" div_id="ip_info" num_tables="1">
-						<table id="acc_four" rows="1" cols="1" divs="1" num_table_divs="0"></table>
+						<table id="acc_four" rows="4" cols="3" divs="12" num_table_divs="5">
+                                                        <table_div location="acc_four1" data="Primary"></table_div>
+                                                        <table_div location="acc_four2" data="Backup"></table_div>
+                                                        <table_div location="acc_four3" data="Peer IP"></table_div>
+                                                        <table_div location="acc_four6" data="Placeholder"></table_div>
+                                                        <table_div location="acc_four9" data="Placeholder"></table_div>
+                                                </table>
 					</accordion_div>
 					<accordion_div class="group" hthree="Precheck Information" div_id="precheck_info" num_tables="1">
-						<table id="acc_five" rows="1" cols="1" divs="1" num_table_divs="0"></table>
+						<table id="acc_five" rows="1" cols="1" divs="1" num_table_divs="1">
+                                                        <table_div location="acc_five0" data="Placeholder"></table_div>
+                                                </table>
 					</accordion_div>
 					<accordion_div class="group" hthree="Field Tech Information" div_id="ft_info" num_tables="1">
-						<table id="acc_six" rows="1" cols="1" divs="1" num_table_divs="0"></table>
+						<table id="acc_six" rows="1" cols="1" divs="1" num_table_divs="1">
+                                                        <table_div location="acc_six0" data="Placeholder"></table_div>
+                                                </table>
 					</accordion_div>
 				</accordion>
 			</table>
 			<table id="tracker_four" rows="1" cols="1" divs="1" num_select_menus="1">
-				<select id="store_select" location="tracker_four0" label_value="Not the store you were looking for?"></select>
+				<select_menu id="store_select" location="tracker_four0" label_value="Not the store you were looking for? "></select_menu>
 			</table>
 		</sba_tab>
 		<sba_tab id="precheck" num_tables="2">

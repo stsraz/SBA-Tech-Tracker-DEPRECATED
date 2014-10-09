@@ -1,6 +1,7 @@
 <?php
-
 include_once get_stylesheet_directory() . '/sba_techtracker/PHP/sba-functions.php';
+include_once get_stylesheet_directory() . '/sba_techtracker/PHP/sba-cookies.php';
+
 
 /* Add pmo-nightr role to the blog */
 /*

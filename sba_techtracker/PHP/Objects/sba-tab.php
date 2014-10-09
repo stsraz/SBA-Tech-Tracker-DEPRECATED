@@ -16,13 +16,16 @@
 			$this->add_accordions($rti);
 			$this->add_bbars($rti);
 			$this->add_table_divs($rti);
-			//$this->add_select_menus($rti);
+			$this->add_select_menus($rti);
 			$this->tab_string .= "</div>";
 		}
 		public function get_tab_properties($rti) {
 			$tab_properties=$this->sbaxml_object->get_tab_properties($rti);
 			$this->tab_id=$tab_properties['id'];
 			$this->num_tables=$tab_properties['num_tables'];
+		}
+		public function get_tab_string() {
+			return $this->tab_string;
 		}
 		public function add_tables($rti) {
 			$tables_string='';
@@ -136,163 +139,25 @@
 			}
 		}
 		public function add_select_menus($rti) {
-			
-		}
-		public function get_tab() {
-			return $this->tab_string;
-		}
-	}
-
-
-
-
-
-
-/*
-class Tabs extends Presenter {
-// A class that creates the tab structure and populates them with tables.
-	public $SBAXML_obj;
-	public $tab_prop=array();
-	
-	public function __construct($rti) {
-		$this->SBAXML_obj=new SBAXML();
-		//Store tab properties
-		$this->tab_prop=$this->SBAXML_obj->get_tab_prop($rti);
-	}
-	
-	public function set_tables() {
-		$temp_obj;
-		$holding_cell=array();
-		$bbars=array();
-		$tous=array();
-		$insert;
-		$tab_handle=$this->tab_prop['handle'];
-		$div_wrapper_open="<div id='" . $tab_handle . "'>";
-		$div_wrapper_close="</div>";
-		// Add the tables to the holding cell
-		for($i=0;$i<$this->tab_prop['tables'];$i++) {
-			$tbl_handle=$this->tab_prop['table'.$i]['handle'];
-			$tbl_rows=$this->tab_prop['table'.$i]['rows'];
-			$tbl_cols=$this->tab_prop['table'.$i]['cols'];
-			$tbl_divs=$this->tab_prop['table'.$i]['divs'];
-			$temp_obj=new Table($tbl_cols,$tbl_rows,$tbl_divs,$tbl_handle);
-			$holding_cell['table'.$i]=$temp_obj->build_table();
-			// If there are button bars, add them to the holding cell in the right spot
-			if($this->tab_prop['bbars']!='0') {
-				for($y=0;$y<$this->tab_prop['bbars'];$y++) {
-					if($this->tab_prop['table'.$i]['bar']=='true') {
-						// Set temporary local variables to hold the button bar properties passed to the ButtonBar constructor
-						$temp_id=$this->tab_prop['table'.$i]['button_bar'.$y]['handle'];
-						$temp_location=$this->tab_prop['table'.$i]['button_bar'.$y]['location'];
-						$temp_class=$this->tab_prop['table'.$i]['button_bar'.$y]['class'];
-						$temp_num_buttons=$this->tab_prop['table'.$i]['button_bar'.$y]['buttons'];
-						$temp_button_ids=array();
-						$temp_button_values=array();
-						for($z=0;$z<$temp_num_buttons;$z++) {
-							$temp_button_ids[$z]=$this->tab_prop['table'.$i]['button_bar'.$y]['button'.$z]['handle'];
-							$temp_button_values[$z]=$this->tab_prop['table'.$i]['button_bar'.$y]['button'.$z]['value'];
-						}
-						$bbar=new ButtonBar($temp_id,$temp_location,$temp_class,$temp_button_ids,$temp_button_values,$temp_num_buttons);
-						// Insert new button bar string into the appropriate spot in the table string (In the right array slot, in the right div)
-						$div_pos="<td><div id='".$temp_location."'></div></td>";
-						$insert=$bbar->get_button_bar_string();
-						$string=$holding_cell['table'.$i];
-						$bbar_table=$this->SBAXML_obj->into_div($div_pos, $insert, $string);
-						// Store the new table with the button bar
-						$holding_cell['table'.$i]=$bbar_table;
-					}
-				}
-			}
-			// If there are static data divs, add them to the holding cell in the right spot
-			if($this->tab_prop['num_divs']!='0') {
-				for($y=0;$y<$this->tab_prop['num_divs'];$y++) {
-					if($this->tab_prop['table'.$i]['has_div']=='true') {
-						$temp_id=$this->tab_prop['table'.$i]['div'.$y]['handle'];
-						$temp_data=$this->tab_prop['table'.$i]['div'.$y]['data'];
-						$div_pos="<td><div id='".$temp_id."'></div></td>";
-						$insert="<td><div id='".$temp_id."'><p>".$temp_data."</p></div></td>";
-						$string=$holding_cell['table'.$i];
-						$div_table=$this->SBAXML_obj->into_div($div_pos, $insert, $string);
-						$holding_cell['table'.$i]=$div_table;
-						
-					}
-				}
-			}
-			// If there are select menus, add them to the holding cell in the right spot
-			//if($this->tab_prop['num_selectmenus']!='0') {
-				//for($y=0;$y<$this->tab_prop['num_selectmenus'];$y++) {
-					//if($this->tab_prop['table'.$i]['selectmenu'=='true']) {
-						//$temp_id=$this->tab_prop['table'.$i]['select'.$y]['handle'];
-						//$temp_label_value=$this->tab_prop['table'.$i]['select'.$y]['label_value'];
-						//$temp_location=$this->tab_prop['table'.$i]['select'.$y]['location'];
-						//$temp_obj=new Store($temp_label_value,$temp_id);
-						
-						//$store_select=$temp_obj->build_select_menu();
-						//$div_pos="<td><div id='".$temp_location."'></div></td>";
-						//$insert="<td><div id='".$temp_location."'>".$store_select."</div></td>";
-						//$string=$holding_cell['table'.$i];
-						//$select_table=$this->SBAXML_obj->into_div($div_pos,$insert,$string);
-						//$holding_cell['table'.$i]=$select_table;
-					//}
-				//}
-			//}
-			// If there are accordions, add them to the holding cell in the right spot
-			if($this->tab_prop['num_accordions']!='0') {
-				for($y=0;$y<$this->tab_prop['num_accordions'];$y++) {
-					if($this->tab_prop['table'.$i]['accordion']=='true') {
-						$temp_id=$this->tab_prop['table'.$i]['accordion'.$y]['handle'];
-						$temp_location=$this->tab_prop['table'.$i]['accordion'.$y]['location'];
-						$temp_ac_divs=$this->tab_prop['table'.$i]['accordion'.$y]['ac_divs'];
-						$temp_class=array();
-						$temp_hthree=array();
-						$temp_div_handle=array();
-						$temp_tables=array();
-						$temp_acc_str;
-						for($x=0;$x<$temp_ac_divs;$x++) {
-							$temp_class[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['class'];
-							$temp_hthree[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['hthree'];
-							$temp_div_handle[$x]=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['div_handle'];
-							for($z=0;$z<$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['num_tables'];$z++) {
-								$temp_rows=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['table'.$z]['rows'];
-								$temp_cols=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['table'.$z]['cols'];
-								$temp_divs=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['table'.$z]['divs'];
-								$temp_thandle=$this->tab_prop['table'.$i]['accordion'.$y]['ac_div'.$x]['table'.$z]['handle'];
-								$temp_table_obj=new Table($temp_cols,$temp_rows,$temp_divs,$temp_thandle);
-								$temp_tables[$z]=$temp_table_obj->build_table();
-							}
-						}
-						
-						$temp_acc_obj=new Accordion($temp_id,$temp_location,$temp_ac_divs,$temp_class,$temp_hthree,$temp_div_handle);
-						$temp_acc_str=$temp_acc_obj->get_acc_string();
-						
-						if($temp_id=='activation_information') {
-							for($i=0;$i<count($temp_tables);$i++) {
-								$div_pos='<div id="' . $temp_div_handle[$i] . '"></div>';
-								$insert=implode($temp_tables);
-								$string=$temp_acc_str;
-								$temp_acc_string= $this->my_logic->into_div($div_pos, $insert, $string);
-							}
-						}
-						
-						$div_pos="<td><div id='".$temp_location."'></div></td>";
-						$insert="<td><div id='".$temp_location."'>".$temp_acc_str."</div></td>";
-						$string=$holding_cell['table'.$i];
-						$acc_table=$this->SBAXML_obj->into_div($div_pos,$insert,$string);
-						$holding_cell['table'.$i]=$acc_table;						
+			for($i=0;$i<$this->num_tables;$i++) {
+				$table_properties=$this->sbaxml_object->get_table_properties($rti,$i);
+				if(isset($table_properties['num_select_menus'])) {
+					for($j=0;$j<$table_properties['num_select_menus'];$j++) {
+						$select_menu_properties=$this->sbaxml_object->get_select_menu_properties($rti,$i,$j);
+						$select_id=$select_menu_properties['id'];
+						$options_array=$this->logic_object->get_upcoming_stores_list();
+						$select_location=$select_menu_properties['location'];
+						$label_value=$select_menu_properties['label_value'];
+						$temp_select_menu_object=new SelectMenu($label_value,$select_id,$options_array);
+						$temp_select_menu_string=$temp_select_menu_object->get_select_menu_string();
+						$div_pos="<div id='" . $select_location . "'></div>";
+						$insert="<div id='" . $select_location . "'>" . $temp_select_menu_string . "</div>";
+						$string=$this->tab_string;
+						$select_menu_to_tab_string=$this->logic_object->into_div($div_pos,$insert,$string);
+						$this->tab_string=$select_menu_to_tab_string;
 					}
 				}
 			}
 		}
-		
-		array_unshift($holding_cell,$div_wrapper_open);
-		$holding_cell[]=$div_wrapper_close;
-		$insert=implode($holding_cell);
-		
-		
-		$tous['handle']=$tab_handle;
-		$tous['insert']=$insert;
-		
-		return $tous;
 	}
-} */
 ?>

@@ -43,6 +43,14 @@ class SBAXML extends Logic{
 		$button_bar_properties['button_values']=$temp_values;
 		return $button_bar_properties;
 	}
+	public function get_select_menu_properties($rti,$table_num,$select_menu_num) {
+		$select_menu_properties=array();	// An array that will hold the requested select menu's properties
+		foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->select_menu[$select_menu_num]->attributes() as $key=>$pair) {
+			$select_menu_properties[$key]=$pair;
+		}
+		return $select_menu_properties;
+		
+	}
 	public function get_accordion_properties($rti,$table_num,$accordion_num) {
 		$accordion_properties=array();	// An array that will hold the requested accordions's properties
 		foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$table_num]->accordion[$accordion_num]->attributes() as $key=>$pair) {
@@ -100,79 +108,21 @@ class SBAXML extends Logic{
 		}
 		return $accordion_table_div_properties;
 	}
-}
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-/*
-	public function get_tab_prop($rti) {
-	//Pulls the requested tab data from the sba_xml doc
-
-		$this_tab=array();	//Holds the tab the function will return
-
-		foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->attributes() as $key=>$pair) {
-			$this_tab[$key]=$pair;
-		}
-		for($i=0;$i<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['tables'];$i++) {
-			foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->attributes() as $key=>$pair) {
-				$this_tab['table'.$i][$key]=$pair;
-				if($key=='bar' and $pair=='true') {
-					for($x=0;$x<count($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->button_bar);$x++) {
-						foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->button_bar[$x]->attributes() as $key=>$pair) {
-							$this_tab['table'.$i]['button_bar'.$x][$key]=$pair;
-						}
-						for($y=0;$y<$this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->button_bar[$x]['buttons'];$y++) {
-							foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->button_bar[$x]->button[$y]->attributes() as $key=>$pair) {
-							$this_tab['table'.$i]['button_bar'.$x]['button'.$y][$key]=$pair;
-							}
-						}
-					}
-				}
-				if($key=='has_div' and $pair=='true') {
-					for($x=0;$x<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['num_divs'];$x++) {
-						foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->div[$x]->attributes() as $key=>$pair) {
-							$this_tab['table'.$i]['div'.$x][$key]=$pair;
-						}
-					};
-				}
-				//if($key=='selectmenu' and $pair=='true') {
-					//for($x=0;$x<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['num_selectmenus'];$x++) {
-						//foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->select[$x]->attributes() as $key=>$pair) {
-							//$this_tab['table'.$i]['select'.$x][$key]=$pair;
-						//}
-					//}
-				//}
-				if($key=='accordion' and $pair=='true') {
-					for($x=0;$x<$this->sba_xml->sba_tab_layout->sba_tab[$rti]['num_accordions'];$x++) {
-						foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->attributes() as $key=>$pair) {
-							$this_tab['table'.$i]['accordion'.$x][$key]=$pair;
-							for($y=0;$y<$this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]['ac_divs'];$y++) {
-								foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->ac_div[$y]->attributes() as $key=>$pair) {
-									$this_tab['table'.$i]['accordion'.$x]['ac_div'.$y][$key]=$pair;
-								}
-								for($z=0;$z<$this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->ac_div[$y]['num_tables'];$z++) {
-									foreach($this->sba_xml->sba_tab_layout->sba_tab[$rti]->table[$i]->accordion[$x]->ac_div[$y]->table[$z]->attributes() as $key=>$pair) {
-										$this_tab['table'.$i]['accordion'.$x]['ac_div'.$y]['table'.$z][$key]=$pair;
-									}
-								}
-							}
-						}
-					}
-				}
+	public function get_pin($bridge) {
+		$temp_array=array();
+		$temp_pin;
+		for($i=0;$i<count($this->sba_xml->bridge->pin);$i++) {
+			foreach($this->sba_xml->bridge->pin[$i]->attributes() as $key=>$pair) {
+				$temp_array[$i][$key]=$pair;
 			}
 		}
-		return $this_tab;
-	}}*/
+		for($i=0;$i<count($temp_array);$i++) {
+			if($temp_array[$i]['code']==$bridge) {
+				$temp_pin=(int)$temp_array[$i]['pin'];
+				break;
+			}
+		}
+		return $temp_pin;
+	}
+}
 ?>

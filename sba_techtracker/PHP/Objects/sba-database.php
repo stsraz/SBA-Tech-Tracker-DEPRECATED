@@ -1,5 +1,5 @@
 <?php
-abstract class Database {
+abstract class Database{
 // An abstract class that holds methods to communicate with the database.
 	
 	public static function connect() {
