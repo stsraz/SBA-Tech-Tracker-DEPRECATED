@@ -52,48 +52,81 @@
 			<table id="tracker_three" rows="1" cols="1" divs="1" num_accordions="1">
 				<accordion id="activation_information" location="tracker_three0" num_accordion_divs="5">
 					<accordion_div class="group" hthree="Activation Information" div_id="act_info" num_tables="3">
-						<table id="acc_zero" rows="2" cols="3" divs="6" num_table_divs="3">
-                                                        <table_div location="acc_zero0" data="Store Number"></table_div>
-                                                        <table_div location="acc_zero1" data="Scheduled Activation Time"></table_div>
-                                                        <table_div location="acc_zero2" data="Activation Type"></table_div>
+						<table id="act_info_zero" rows="2" cols="3" divs="6" num_table_divs="3">
+                                                        <table_div location="act_info_zero0" data="Store Number"></table_div>
+                                                        <table_div location="act_info_zero1" data="Scheduled Activation Time"></table_div>
+                                                        <table_div location="act_info_zero2" data="Activation Type"></table_div>
                                                 </table>
-                                                <table id="acc_one" rows="2" cols="4" divs="8" num_table_divs="4">
-                                                        <table_div location="acc_one0" data="Eon Number"></table_div>
-                                                        <table_div location="acc_one1" data="Ops Console"></table_div>
-                                                        <table_div location="acc_one2" data="Bridge Access Code"></table_div>
-                                                        <table_div location="acc_one3" data="Bridge Pin"></table_div>
+                                                <table id="act_info_one" rows="2" cols="4" divs="8" num_table_divs="4">
+                                                        <table_div location="act_info_one0" data="Eon Number"></table_div>
+                                                        <table_div location="act_info_one1" data="Ops Console"></table_div>
+                                                        <table_div location="act_info_one2" data="Bridge Access Code"></table_div>
+                                                        <table_div location="act_info_one3" data="Bridge Pin"></table_div>
                                                 </table>
-						<table id="acc_two" rows="2" cols="4" divs="8" num_table_divs="4">
-                                                        <table_div location="acc_two0" data="Assigned SA Tech"></table_div>
-                                                        <table_div location="acc_two1" data="Primary Access"></table_div>
-                                                        <table_div location="acc_two2" data="Backup Carrier"></table_div>
-                                                        <table_div location="acc_two3" data="Revisit"></table_div>
+						<table id="act_info_two" rows="2" cols="4" divs="8" num_table_divs="4">
+                                                        <table_div location="act_info_two0" data="Assigned SA Tech"></table_div>
+                                                        <table_div location="act_info_two1" data="Primary Access"></table_div>
+                                                        <table_div location="act_info_two2" data="Backup Carrier"></table_div>
+                                                        <table_div location="act_info_two3" data="Revisit"></table_div>
                                                 </table>
 					</accordion_div>
 					<accordion_div class="group" hthree="Store Information" div_id="store_info" num_tables="1">
-						<table id="acc_three" rows="3" cols="2" divs="6" num_table_divs="3">
-                                                        <table_div location="acc_three0" data="Phone Number"></table_div>
-                                                        <table_div location="acc_three2" data="Address"></table_div>
-                                                        <table_div location="acc_three4" data="City, State Zip"></table_div>
+						<table id="store_info_zero" rows="3" cols="2" divs="6" num_table_divs="3">
+                                                        <table_div location="store_info_zero0" data="Phone Number"></table_div>
+                                                        <table_div location="store_info_zero2" data="Address"></table_div>
+                                                        <table_div location="store_info_zero4" data="City, State Zip"></table_div>
                                                 </table>
 					</accordion_div>
 					<accordion_div class="group" hthree="IP Information" div_id="ip_info" num_tables="1">
-						<table id="acc_four" rows="4" cols="3" divs="12" num_table_divs="5">
-                                                        <table_div location="acc_four1" data="Primary"></table_div>
-                                                        <table_div location="acc_four2" data="Backup"></table_div>
-                                                        <table_div location="acc_four3" data="Peer IP"></table_div>
-                                                        <table_div location="acc_four6" data="Placeholder"></table_div>
-                                                        <table_div location="acc_four9" data="Placeholder"></table_div>
+						<table id="ip_info_zero" rows="6" cols="3" divs="17" num_table_divs="6">
+                                                        <table_div location="ip_info_zero1" data="Primary"></table_div>
+                                                        <table_div location="ip_info_zero2" data="Backup"></table_div>
+                                                        <table_div location="ip_info_zero3" data="Peer IP"></table_div>
+                                                        <table_div location="ip_info_zero6" data="Gateway"></table_div>
+                                                        <table_div location="ip_info_zero9" data="Interface"></table_div>
+                                                        <table_div location="ip_info_zero12" data="Aruba"></table_div>
+                                                        <table_div location="ip_info_zero15" data="Switch Loopback"></table_div>
                                                 </table>
 					</accordion_div>
-					<accordion_div class="group" hthree="Precheck Information" div_id="precheck_info" num_tables="1">
-						<table id="acc_five" rows="1" cols="1" divs="1" num_table_divs="1">
-                                                        <table_div location="acc_five0" data="Placeholder"></table_div>
+					<accordion_div class="group" hthree="Precheck Information" div_id="precheck_info" num_tables="5">
+						<table id="precheck_info_zero" rows="4" cols="2" divs="8" num_table_divs="4">
+                                                        <table_div location="precheck_info_zero0" data="Router GM"></table_div>
+                                                        <table_div location="precheck_info_zero2" data="Switch GM"></table_div>
+                                                        <table_div location="precheck_info_zero4" data="Aruba MAC"></table_div>
+                                                        <table_div location="precheck_info_zero6" data="CP MAC"></table_div>
                                                 </table>
+						<table id="precheck_info_one" rows="4" cols="2" divs="8" num_table_divs="4">
+														<table_div location="precheck_info_one0" data="LEC"></table_div>
+														<table_div location="precheck_info_one2" data="LEC Call Date/Time"></table_div>
+														<table_div location="precheck_info_one4" data="LEC Technician"></table_div>
+														<table_div location="precheck_info_one6" data="LEC Ticket Number"></table_div>
+												</table>
+						<table id="precheck_info_two" rows="4" cols="2" divs="8" num_table_divs="4">
+														<table_div location="precheck_info_two0" data="LEC"></table_div>
+														<table_div location="precheck_info_two2" data="LEC Call Date/Time"></table_div>
+														<table_div location="precheck_info_two4" data="LEC Technician"></table_div>
+														<table_div location="precheck_info_two6" data="LEC Ticket Number"></table_div>
+												</table>
+						<table id="precheck_info_three" rows="2" cols="2" divs="4" num_table_divs="2">
+														<table_div location="precheck_info_three0" data="IP Range"></table_div>
+														<table_div location="precheck_info_three2" data="CIDR"></table_div>
+												</table>
+						<table id="precheck_info_four" rows="5" cols="2" divs="10" num_table_divs="5">
+														<table_div location="precheck_info_four0" data="Modem Make/Model"></table_div>
+														<table_div location="precheck_info_four2" data="Online"></table_div>
+														<table_div location="precheck_info_four4" data="DHCP"></table_div>
+														<table_div location="precheck_info_four6" data="NAT"></table_div>
+														<table_div location="precheck_info_four8" data="Firewalls"></table_div>
+												</table>
 					</accordion_div>
 					<accordion_div class="group" hthree="Field Tech Information" div_id="ft_info" num_tables="1">
-						<table id="acc_six" rows="1" cols="1" divs="1" num_table_divs="1">
-                                                        <table_div location="acc_six0" data="Placeholder"></table_div>
+						<table id="ft_info_zero" rows="6" cols="2" divs="12" num_table_divs="6">
+                                                        <table_div location="ft_info_zero0" data="Name"></table_div>
+                                                        <table_div location="ft_info_zero2" data="Vendor"></table_div>
+                                                        <table_div location="ft_info_zero4" data="Phone Number"></table_div>
+                                                        <table_div location="ft_info_zero6" data="Email Address"></table_div>
+                                                        <table_div location="ft_info_zero8" data="Welcome Email Sent Date/Time"></table_div>
+                                                        <table_div location="ft_info_zero10" data="Avg. Peer Rating"></table_div>
                                                 </table>
 					</accordion_div>
 				</accordion>
@@ -116,3 +149,4 @@
 		</sba_tab>		
 	</sba_tab_layout>
 </sba_data>
+

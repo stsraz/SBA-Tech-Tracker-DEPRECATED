@@ -61,7 +61,7 @@ class Presenter {
 		
 	}
 	public function show_user_store() {
-		$div_array=array('acc_zero3','acc_zero4','acc_zero5','acc_one4','acc_one5','acc_one6','acc_one7','acc_two4','acc_two5','acc_two6','acc_two7');
+		$div_array=array('act_info_zero3','act_info_zero4','act_info_zero5','act_info_one4','act_info_one5','act_info_one6','act_info_one7','act_info_two4','act_info_two5','act_info_two6','act_info_two7');
 		$data_array=array('store_number','scheduled','type','eon','ops_console','bridge','pin','assigned_tech','primary_vendor','backup_carrier','revisit');
 		$user_store=array();
 		$user_store=$this->logic_object->get_store('user');
@@ -81,7 +81,7 @@ class Presenter {
 		}
 	}
 	public function show_requested_store() {
-		$div_array=array('acc_zero3','acc_zero4','acc_zero5','acc_one4','acc_one5','acc_one6','acc_one7','acc_two4','acc_two5','acc_two6','acc_two7');
+		$div_array=array('act_info_zero3','act_info_zero4','act_info_zero5','act_info_one4','act_info_one5','act_info_one6','act_info_one7','act_info_two4','act_info_two5','act_info_two6','act_info_two7');
 		$data_array=array('store_number','scheduled','type','eon','ops_console','bridge','pin','assigned_tech','primary_vendor','backup_carrier','revisit');
 		$requested_number=$_POST['requested'];
 		$temp_requested_store=array();
