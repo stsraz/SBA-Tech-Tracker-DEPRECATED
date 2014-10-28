@@ -1,33 +1,3 @@
 #tabs {
-	font-size:small;
-}
-.my_table {
-	border-collapse: collapse;
 	width:100%;
-	margin-top:0px;
-	margin-bottom:20px;
-}
-.my_buttonbar {
-	width:100%;
-	text-align:center;
-}
-.my_button {
-	margin-right:20px;
-	margin-left:20px;
-}
-.buttonset {
-	padding:4px;
-	display:inline-block;
-}
-#acc_one_table td,#acc_two_table td {
-	width: 25%;
-	text-align: center;
-}
-#tracker_one_table td,#acc_zero_table td,#acc_four_table td {
-	width: 33%;
-	text-align: center;
-}
-#tracker_zero_table td,#acc_three_table td {
-	width: 50%;
-	text-align: center;
 }
